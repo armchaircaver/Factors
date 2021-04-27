@@ -41,7 +41,7 @@ void test_brent() {
 }
 
 
-void test_pollard_brent() {
+void test_pollard_brent_mont() {
 	clock_t startTime = clock();
 	uint64_t fac;
 	for (int i = 0; i < primes.size(); i++) {
@@ -63,7 +63,7 @@ void test_pollard_brent() {
 		}
 	}
 	clock_t endTime = clock();
-	printf("Pollard Brent tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
+	printf("Pollard Brent Montgomery tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
 
 
@@ -165,6 +165,6 @@ int main() {
 	primes.clear();
 	construct_primes(31);
 	test_brent();
-	test_pollard_brent();
+	test_pollard_brent_mont();
 	lengthy_test_pollard_brent();
 }
