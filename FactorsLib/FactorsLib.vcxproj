@@ -125,7 +125,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Project1;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Factors;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\RuttenEekelen;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Division by multiplication 64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

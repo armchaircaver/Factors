@@ -95,7 +95,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +110,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Project1;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\divide long unsigned;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\Division by multiplication 64;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\libdivide;C:\Users\Arthur\Documents\Visual Studio 2013\Projects\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\libdivide;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>

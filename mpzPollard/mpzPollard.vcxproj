@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\source\repos\mpir-master\msvc\vs19\lib_mpir_cxx\x64\Release;C:\Users\Arthur\source\repos\mpir-master\msvc\vs19\lib_mpir_gc\x64\Release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\mpir-master\msvc\vs19\lib_mpir_cxx\x64\Release;C:\Users\Arthur\Source\Repos\mpir-master\msvc\vs19\lib_mpir_gc\x64\Release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -138,8 +138,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>C:\Users\Arthur\source\repos\mpir-master\msvc\vs19\lib_mpir_cxx\x64\Release\mpirxx.lib
-C:\Users\Arthur\source\repos\mpir-master\msvc\vs19\lib_mpir_gc\x64\Release\mpir.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>C:\Users\Arthur\Source\Repos\mpir-master\msvc\vs19\lib_mpir_cxx\x64\Release\mpirxx.lib
+C:\Users\Arthur\Source\Repos\mpir-master\msvc\vs19\lib_mpir_gc\x64\Release\mpir.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\source\repos\Factors\Factors;C:\Users\Arthur\source\repos\Factors\Project1;C:\Users\Arthur\source\repos\Factors\divide long unsigned;C:\Users\Arthur\source\repos\Factors\Division by multiplication 64;C:\Users\Arthur\source\repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>All</AssemblerOutput>
     </ClCompile>
     <Link>
