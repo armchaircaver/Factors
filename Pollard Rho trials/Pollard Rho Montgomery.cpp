@@ -79,7 +79,7 @@ uint64_t prgcd(uint64_t a, uint64_t b) {
 }
 
 // Returns a factor of n, assumes n is odd.
-uint64_t pollard_brent(uint64_t n) {
+uint64_t pollard_brent_montgomery(uint64_t n) {
 
     // Random number generator from D.E. Knuth
     static uint64_t rng = 0xdeafbeef;
@@ -127,11 +127,11 @@ uint64_t pollard_brent(uint64_t n) {
 }
 
 int tries = 0;
-uint64_t pollard_brent_retry(uint64_t n) {
+uint64_t pollard_brent_montgomery_retry(uint64_t n) {
     uint64_t f;
     tries = 0;
     do {
-        f = pollard_brent(n);
+        f = pollard_brent_montgomery(n);
         tries++;
      } while (f == n);
     return f;

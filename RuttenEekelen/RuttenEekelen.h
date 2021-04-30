@@ -7,7 +7,7 @@ struct RE {
 	int p;          
 	int t;			
 	uint64_t sdashmask;
-	uint64_t M;		// original number for reference
+	uint64_t M=0;		// original number for reference
 };
 
 int ceillog2(uint64_t n);

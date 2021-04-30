@@ -22,6 +22,7 @@
     <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
     <ClCompile Include="..\Factors\ipow.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
+    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Project1\mulmod.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>

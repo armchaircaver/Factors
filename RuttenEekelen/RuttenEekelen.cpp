@@ -134,6 +134,11 @@ struct RE RE_gen(uint64_t d){
 	if (re.M & 0x8000000000000000)
 		return mulmodAS(a, b, re.M); //RE cannot process numbers above 2^63
 
+	if (re.M == 0ull) {
+		printf("mulmodRE, uninitialised RE structure\n");
+		exit(1);
+	}
+
 	int p = re.p;
 	int t = re.t;
 	uint64_t M = re.M;

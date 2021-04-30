@@ -12,7 +12,6 @@ void setMaxSmallPrime(int i);
 
 uint64_t brent(uint64_t n);
 
-//don't need to export this as it is run internally
 //void sieve();
 
 char getmethod();

@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include "FactorsA.h"
 #include "FJ64_262K.h"
+#include <RuttenEekelen.h>
+#include <mulmod.h>
 
 int countcomposites;
 int factorcount;
@@ -47,18 +49,18 @@ void performance_trial() {
 		clock_t startTime = clock();
 		int primecount = 0;
 		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
+			uint64_t n = (1ULL << index) + count;
 			if (is_prime(n, f))
 				primecount++;
 		}
 		clock_t endTime = clock();
-		printf("is_prime     : 10^%d\t %d \t %8.2f\t", index, primecount,
+		printf("is_prime     : 2^%d\t %llu \t %8.2f\t", index, 1ull<<index,
 			double(endTime - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
 
 		startTime = clock();
 		primecount = 0;
 		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
+			uint64_t n = (1ULL << index) + count;
 			if (is_prime_2_64(n))
 				primecount++;
 		}
@@ -69,7 +71,7 @@ void performance_trial() {
 		startTime = clock();
 		primecount = 0;
 		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
+			uint64_t n = (1ULL << index) + count;
 			if (is_primeFJ(n,f))
 				primecount++;
 		}
@@ -116,10 +118,121 @@ void longrun() {
 		}
 		printf("10^%d verified\n", index);
 	}
+}
+
+uint64_t pow_mod(uint64_t x, uint64_t y, RE re_mr) {
+	uint64_t number = 1LL;
+
+	while (y) {
+		if (y & 1LL)
+			number = mulmodRE(number, x,  re_mr);
+		y >>= 1;
+		x = mulmodRE(x, x,  re_mr);
+	}
+	return number;
+}
+bool miller_rabin_pass(uint64_t a, int s, uint64_t d, uint64_t n, uint64_t& factor, RE re_mr) {
+	factor = 1ULL;
+	if (n == a) return true;
+	if (n % a == 0) return false;
+	uint64_t x = pow_mod(a, d, re_mr);
+	if ((x == 1ULL) || (x == n - 1LL)) return true;
+
+	for (int i = 0; i < s; i++) {
+		uint64_t lastx = x;
+		x = mulmodRE(x, x, re_mr);
+		if (x == n - 1ULL) return true;
+		if (x == 1LL) {
+			//factor = gcd(lastx - 1ULL, n);
+			return false;
+		}
+	}
+	return false;
+}
+
+
+
+void simple_sprp_compare() {
+	for (auto w : { 2ull,3ull,5ull,7ull,101ull }) {
+		printf("witness %llu\n", w);
+		clock_t startTime = clock();
+		int primes = 0;
+		uint64_t start = (1ull << 62) + 1;
+		for (uint64_t n = start; n < start + 1000000; n += 2) {
+			if (is_SPRP(w, n))
+				primes++;
+		}
+		clock_t endTime = clock();
+		printf("is_SPRP     :  %8.2f, %d primes\n",
+			double(endTime - startTime) / (double)CLOCKS_PER_SEC, primes); fflush(stdout);
+
+		startTime = clock();
+		struct RE re_mr;
+		primes = 0;
+		for (uint64_t n = start; n < start + 1000000; n += 2) {
+			uint64_t factor = 1uLL;
+			uint64_t d = n - 1LL;
+			int s = 0;
+			while (d % 2uLL == 0L) {
+				d >>= 1;
+				s++;
+			}
+			re_mr = RE_gen(n);
+			if (miller_rabin_pass(w, s, d, n, factor, re_mr))
+				primes++;
+		}
+		endTime = clock();
+		printf("miller_rabin_pass:  %8.2f, %d primes\n",
+			double(endTime - startTime) / (double)CLOCKS_PER_SEC, primes); fflush(stdout);
+
+	}
+}
+
+void simple_is_prime_compare() {
+	clock_t startTime = clock();
+	for (int i = 40; i < 64; i += 2) {
+		int primes = 0;
+		printf("numbers starting 2**%d\n", i);
+		uint64_t start = (1ull << i) + 1;
+		for (uint64_t n = start; n < start + 10000000; n += 2) {
+
+			if (n == 2 || n == 3 ||n == 5 || n == 7) {
+				primes++; continue;
+			}
+			if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0 || n % 7 == 0) continue;
+			if (n < 121) {
+				if (n > 1) primes++;
+				continue;
+			}
+
+
+			if (is_SPRP(2ull, n) && is_SPRP(bases[hashh(n)], n))
+				primes++;
+		}
+		clock_t endTime = clock();
+		printf("is_SPRP     :  %8.2f, %d primes\n",
+			double(endTime - startTime) / (double)CLOCKS_PER_SEC, primes); fflush(stdout);
+
+
+		startTime = clock();
+		primes = 0;
+		uint64_t factor = 1;
+		for (uint64_t n = start; n < start + 10000000; n += 2) {
+			if (is_primeFJ(n, factor))
+				primes++;
+		}
+		endTime = clock();
+		printf("is_primeFJ:  %8.2f, %d primes\n",
+			double(endTime - startTime) / (double)CLOCKS_PER_SEC, primes); fflush(stdout);
+	}
 
 }
+
+
 int main(){
 
+	simple_is_prime_compare();
+	simple_sprp_compare();
 	performance_trial();
 	verify();
 	longrun();

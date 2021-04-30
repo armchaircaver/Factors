@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include <stdint.h>
-#include "FactorsA.h"
+#include <FactorsA.h>
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
 
@@ -21,9 +21,12 @@ DLLEXPORT bool isprime(uint64_t n, uint64_t &factor){
 	return is_prime(n, factor);
 }
 
+/*
+// shouldn't need this
 DLLEXPORT void Sieve(){
 	sieve();
 }
+*/
 
 DLLEXPORT uint64_t SquareFreePart(uint64_t n){
 	return squarefreepart(n);

@@ -49,7 +49,7 @@ void test_pollard_brent_mont() {
 		for (int j = i + 1; j < primes.size(); j++) {
 			uint64_t q = primes[j];
 			uint64_t pq = p * q;
-			fac = pollard_brent_retry(pq);
+			fac = pollard_brent_montgomery_retry(pq);
 			//printf("%llu: factor %llu\n", pq, fac);
 			if (pq % fac) {
 				printf("%llu Not a factor of %llu\n", fac, pq);
@@ -81,7 +81,7 @@ void lengthy_test_pollard_brent() {
 			for (int j = i + 1; j < primes.size(); j++) {
 				uint64_t q = primes[j];
 				uint64_t pq = p * q;
-				fac = pollard_brent_retry(pq);
+				fac = pollard_brent_montgomery_retry(pq);
 				//printf("%llu: factor %llu\n", pq, fac);
 				if (pq % fac) {
 					printf("%llu Not a factor of %llu\n", fac, pq);
@@ -110,21 +110,21 @@ void test_powers() {
 		for (auto p : primes) {
 			uint64_t n = p * p;
 			printf("testing pollard for %llu**2 ... ", p);
-			uint64_t fac = pollard_brent_retry(n);
+			uint64_t fac = pollard_brent_montgomery_retry(n);
 			printf("factor %llu found\n", fac);
 
 
 			n = p * p * p;
 			if (!is_prime(n, f)) {
 				printf("testing pollard for %llu**3 = %llu ... ", p, n);
-				fac = pollard_brent_retry(n);
+				fac = pollard_brent_montgomery_retry(n);
 				printf("factor %llu found\n", fac);
 			}
 
 			n = p * p * p * p;
 			if (!is_prime(n, f)) {
 				printf("testing pollard for %llu**4 = %llu ... ", p, n);
-				fac = pollard_brent_retry(n);
+				fac = pollard_brent_montgomery_retry(n);
 				printf("factor %llu found\n", fac);
 			}
 		}
@@ -142,12 +142,12 @@ void test_powers2() {
 		if (m%100000==1)
 			printf("Examining powers of %llu\n", m);
 		
-		int e = 1;
+		int e = 5;
 		while (e < max_e) {
 			n *= m;
 			e++;
-			//printf("testing pollard for %llu = %llu**%d ... ", n, m, e);
-			uint64_t fac = pollard_brent_retry(n);
+			//printf("testing pollard_brent_montgomery_retry for %llu = %llu**%d ... ", n, m, e);
+			uint64_t fac = pollard_brent_montgomery_retry(n);
 			int tries = getTries();
 			if (tries>1)
 				printf("factor %llu of %llu**%d found, %d tries\n", fac,m,e, tries );
@@ -162,9 +162,12 @@ void test_powers2() {
 
 int main() {
 	//test_powers2();
-	primes.clear();
-	construct_primes(31);
-	test_brent();
-	test_pollard_brent_mont();
+	for (int i = 10; i < 32; i++) {
+		printf("Numbers starting at 2**%d\n", i);
+		primes.clear();
+		construct_primes(i);
+		test_brent();
+		test_pollard_brent_mont();
+	}
 	lengthy_test_pollard_brent();
 }
