@@ -16,5 +16,5 @@ int floorlog2(uint64_t n);
 
 struct RE RE_gen(uint64_t M);
 
-uint64_t mulmodRE(uint64_t a, uint64_t b, struct RE re);
+uint64_t mulmodRE(uint64_t a, uint64_t b, struct RE &re);
 

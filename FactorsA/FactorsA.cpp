@@ -7,6 +7,7 @@
 #include <algorithm>  // sort, count
 #include <unordered_set>
 #include "RuttenEekelen.h"
+#include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 
 
 const uint64_t PFSIZE = 1000L * 1000L;
@@ -61,16 +62,23 @@ uint64_t random_uint64_t(){
 	return out;
 }
 
-struct mu magicn;
-struct RE re;
+//struct mu magicn;
+//struct RE re;
 
+/*
 uint64_t squareaddmod(uint64_t y, uint64_t  a, uint64_t n){
 	y = mulmod(y, y, n, magicn, re);
 	y = addMod(y, a, n);
 	return y;
 }
+*/
 
-uint64_t brent(uint64_t n){
+uint64_t squareaddmodRE(uint64_t y, uint64_t  a, uint64_t n, RE &re) {
+	y = mulmodRE(y, y, re);
+	return addMod(y, a, n);
+}
+/*
+uint64_t brent(uint64_t n) {
 
 	if (n % 2 == 0)
 		return 2;
@@ -97,7 +105,7 @@ uint64_t brent(uint64_t n){
 
 	while (g == 1LL) {
 		x = y;
-		for (uint64_t i = 0LL; i < r; i++){
+		for (uint64_t i = 0LL; i < r; i++) {
 			y = squareaddmod(y, a, n);
 		}
 
@@ -109,7 +117,7 @@ uint64_t brent(uint64_t n){
 				y = squareaddmod(y, a, n);
 
 				// q = q |x-y| mod n
-				q = mulmod(q, (x>y) ? x - y : y - x, n, magicn, re);
+				q = mulmod(q, (x > y) ? x - y : y - x, n, magicn, re);
 			}
 			g = gcd(q, n);
 			k += m;
@@ -121,7 +129,122 @@ uint64_t brent(uint64_t n){
 		do {
 			// ys = ys² + a mod n
 			ys = squareaddmod(ys, a, n);
-			g = gcd((x>ys) ? x - ys : ys - x, n);
+			g = gcd((x > ys) ? x - ys : ys - x, n);
+		} while (g == 1LL);
+	}
+
+	return g;
+}
+*/
+
+uint64_t squareaddmodMU(uint64_t y, uint64_t  a, uint64_t n, mu& magicn) {
+	y = mulmodRR(y, y, magicn);
+	return addMod(y, a, n);
+}
+
+uint64_t pollard_rhoMU(uint64_t n) {
+	//pollard rho algorithm with brent variant, using magic numbers to divide by multiplication
+
+	if (n % 2 == 0)
+		return 2;
+
+	struct mu magicn = magicu2(n);
+
+	const uint64_t m = 200;
+	uint64_t a, x, y, ys, r = 1, q = 1, g = 1;
+	if (verbose)
+		printf("\nCalling pollard_rhoMU for n=%llu", n);
+
+	do
+		a = random_uint64_t() % n;
+	while (a == 0 || a == n - 2);
+
+	do
+		y = random_uint64_t() % n;
+	while (y == 0 || y == n - 2);
+
+	while (g == 1LL) {
+		x = y;
+		for (uint64_t i = 0LL; i < r; i++) {
+			y = squareaddmodMU(y, a, n, magicn);
+		}
+
+
+		uint64_t k = 0;
+		while (k < r && g == 1LL) {
+			ys = y;
+			for (uint64_t i = 0LL; i < m && i < r - k; i++) {
+				y = squareaddmodMU(y, a,n, magicn);
+
+				// q = q |x-y| mod n
+				q = mulmodRR(q, (x > y) ? x - y : y - x, magicn);
+			}
+			g = gcd(q, n);
+			k += m;
+		}
+		r *= 2uLL;
+	}
+
+	if (g == n) {
+		do {
+			// ys = ys² + a mod n
+			ys = squareaddmodMU(ys, a, n, magicn);
+			g = gcd((x > ys) ? x - ys : ys - x, n);
+		} while (g == 1LL);
+	}
+
+	return g;
+}
+
+uint64_t pollard_rhoRE(uint64_t n) {
+	// pollard rho algorithm with brent variation, using Rutten-Eekelin division
+
+	if (n % 2 == 0)
+		return 2;
+
+
+	RE re = RE_gen(n);
+
+	const uint64_t m = 200;
+	uint64_t a, x, y, ys, r = 1, q = 1, g = 1;
+	if (verbose)
+		printf("\nCalling brent for n=%llu", n);
+
+	do
+		a = random_uint64_t() % n;
+	while (a == 0 || a == n - 2);
+
+	do
+		y = random_uint64_t() % n;
+	while (y == 0 || y == n - 2);
+
+	while (g == 1LL) {
+		x = y;
+		for (uint64_t i = 0LL; i < r; i++) {
+			y = squareaddmodRE(y, a, n, re);
+		}
+
+
+		uint64_t k = 0;
+		while (k < r && g == 1LL) {
+			ys = y;
+			for (uint64_t i = 0LL; i < m && i < r - k; i++) {
+				y = squareaddmodRE(y, a, n, re);
+
+				// q = q |x-y| mod n
+				q = mulmodRE(q, (x > y) ? x - y : y - x, re);
+			}
+			g = gcd(q, n);
+			k += m;
+		}
+		r *= 2uLL;
+	}
+
+	if (g == n) {
+		do {
+			// ys = ys² + a mod n
+			ys = squareaddmodRE(ys, a, n, re);
+			g = gcd((x > ys) ? x - ys : ys - x, n);
 		} while (g == 1LL);
 	}
 
@@ -147,7 +270,7 @@ void factorise_large(uint64_t n, uint64_t *primearray, int &pasize){
 		q = n / p;
 	}
 	else {
-		p = brent(n);
+		p = pollard_brent_montgomery_retry(n);
 		q = n / p;
 	}
 

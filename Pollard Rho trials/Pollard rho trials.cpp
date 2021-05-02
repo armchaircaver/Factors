@@ -19,7 +19,7 @@ void construct_primes(int power, int numprimes=100) {
 }
 
 
-void test_brent() {
+void test_pollard_rhoRE() {
 	clock_t startTime = clock();
 
 	uint64_t fac;
@@ -28,7 +28,7 @@ void test_brent() {
 		for (int j = i + 1; j < primes.size(); j++) {
 			uint64_t q = primes[j];
 			uint64_t pq = p * q;
-			fac = brent(pq);
+			fac = pollard_rhoRE(pq);
 			//printf("%llu: factor %llu\n", pq, fac);
 			if (pq % fac) {
 				printf("Not a factor\n");
@@ -37,7 +37,28 @@ void test_brent() {
 		}
 	}
 	clock_t endTime = clock();
-	printf("Brent tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
+	printf("pollard_rhoRE tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
+}
+
+void test_pollard_rhoMU() {
+	clock_t startTime = clock();
+
+	uint64_t fac;
+	for (int i = 0; i < primes.size(); i++) {
+		uint64_t p = primes[i];
+		for (int j = i + 1; j < primes.size(); j++) {
+			uint64_t q = primes[j];
+			uint64_t pq = p * q;
+			fac = pollard_rhoMU(pq);
+			//printf("%llu: factor %llu\n", pq, fac);
+			if (pq % fac) {
+				printf("Not a factor\n");
+				exit(1);
+			}
+		}
+	}
+	clock_t endTime = clock();
+	printf("pollard_rhoMU tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
 
 
@@ -166,7 +187,9 @@ int main() {
 		printf("Numbers starting at 2**%d\n", i);
 		primes.clear();
 		construct_primes(i);
-		test_brent();
+		test_pollard_rhoRE();
+		// pollard_rhoMU is much slower, so eliminate from trials
+		//test_pollard_rhoMU();
 		test_pollard_brent_mont();
 	}
 	lengthy_test_pollard_brent();

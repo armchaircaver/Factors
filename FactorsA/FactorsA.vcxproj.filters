@@ -39,12 +39,18 @@
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FactorsA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Factors\ipow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

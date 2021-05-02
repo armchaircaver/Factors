@@ -23,6 +23,7 @@
     <ClCompile Include="..\Factors\ipow.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
+    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
     <ClCompile Include="..\Project1\mulmod.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Factors\ipow.h" />
+    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h" />
     <ClInclude Include="FactorsA.h" />
   </ItemGroup>
   <ItemGroup>

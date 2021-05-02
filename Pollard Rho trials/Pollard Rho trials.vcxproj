@@ -146,6 +146,7 @@
     <ClCompile Include="..\FactorsA\FactorsA.cpp" />
     <ClCompile Include="..\Factors\ipow.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
+    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Project1\mulmod.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AssemblyAndSourceCode</AssemblerOutput>

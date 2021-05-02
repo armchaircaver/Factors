@@ -39,6 +39,9 @@
     <ClCompile Include="Pollard rho trials.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Factors\ipow.h">

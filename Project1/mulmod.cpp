@@ -67,6 +67,7 @@ uint64_t mulmodAS(uint64_t a, uint64_t b, uint64_t m){
 	return _mulmod_64(a, b, m);
 }
 // repeated reduction of most significant 64 bits
+
 uint64_t mulmodRR(uint64_t a, uint64_t b, struct mu mag){
 	uint64_t n = mag.n;
 
