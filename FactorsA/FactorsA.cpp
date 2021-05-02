@@ -55,6 +55,7 @@ void factorise_small(int n, uint64_t *primearray, int &pasize) {
 	primearray[pasize++] = (uint64_t)n;
 }
 
+
 uint64_t random_uint64_t(){
 	uint64_t out = 0ULL;
 	for (int i = 0; i < 8; i++)
@@ -62,80 +63,12 @@ uint64_t random_uint64_t(){
 	return out;
 }
 
-//struct mu magicn;
-//struct RE re;
-
-/*
-uint64_t squareaddmod(uint64_t y, uint64_t  a, uint64_t n){
-	y = mulmod(y, y, n, magicn, re);
-	y = addMod(y, a, n);
-	return y;
-}
-*/
 
 uint64_t squareaddmodRE(uint64_t y, uint64_t  a, uint64_t n, RE &re) {
 	y = mulmodRE(y, y, re);
 	return addMod(y, a, n);
 }
-/*
-uint64_t brent(uint64_t n) {
 
-	if (n % 2 == 0)
-		return 2;
-
-
-#if MULMODMETHOD == 2
-	magicn = magicu2(n);
-#elif  MULMODMETHOD == 4
-	re = RE_gen(n);
-#endif
-
-	const uint64_t m = 200;
-	uint64_t a, x, y, ys, r = 1, q = 1, g = 1;
-	if (verbose)
-		printf("\nCalling brent for n=%llu", n);
-
-	do
-		a = random_uint64_t() % n;
-	while (a == 0 || a == n - 2);
-
-	do
-		y = random_uint64_t() % n;
-	while (y == 0 || y == n - 2);
-
-	while (g == 1LL) {
-		x = y;
-		for (uint64_t i = 0LL; i < r; i++) {
-			y = squareaddmod(y, a, n);
-		}
-
-
-		uint64_t k = 0;
-		while (k < r && g == 1LL) {
-			ys = y;
-			for (uint64_t i = 0LL; i < m && i < r - k; i++) {
-				y = squareaddmod(y, a, n);
-
-				// q = q |x-y| mod n
-				q = mulmod(q, (x > y) ? x - y : y - x, n, magicn, re);
-			}
-			g = gcd(q, n);
-			k += m;
-		}
-		r *= 2uLL;
-	}
-
-	if (g == n) {
-		do {
-			// ys = ys² + a mod n
-			ys = squareaddmod(ys, a, n);
-			g = gcd((x > ys) ? x - ys : ys - x, n);
-		} while (g == 1LL);
-	}
-
-	return g;
-}
-*/
 
 uint64_t squareaddmodMU(uint64_t y, uint64_t  a, uint64_t n, mu& magicn) {
 	y = mulmodRR(y, y, magicn);

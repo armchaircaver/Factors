@@ -87,18 +87,25 @@ void verify() {
 	init_genrand64((uint64_t)time(NULL));
 	uint64_t f;
 
-	for (int index = 60; index < 64; index++) {
+	int index = 5;
+	for (;;) {
 		uint64_t interval = (1ULL << (index + 1)) - (1ULL << index);
 		int primecount = 0;
 		for (int count = 0; count < 1000000; count++) {
 			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
-			bool n_is_prime = is_prime(n, f);
+			bool n_is_prime = is_prime_ref(n, f);
 			if (n_is_prime != is_prime_2_64(n))
-				printf("%llu, discrepancy is_prime_2_64\n", n); fflush(stdout);
-			if (n_is_prime != is_primeFJ(n,f))
-				printf("%llu, discrepancy is_primeFJ\n", n); fflush(stdout);
+			{
+				printf("%llu, discrepancy is_prime_2_64\n", n); exit(1);
+			}
+			if (n_is_prime != is_primeFJ(n, f))
+			{
+				printf("%llu, discrepancy is_primeFJ\n", n); exit(1);
+			}
 		}
 		printf("10^%d verified\n", index);
+		index++;
+		if (index == 64)index = 5;
 	}
 }
 
@@ -231,10 +238,10 @@ void simple_is_prime_compare() {
 
 int main(){
 
+	verify();
 	simple_is_prime_compare();
 	simple_sprp_compare();
 	performance_trial();
-	verify();
 	longrun();
 
 	uint64_t seed = (uint64_t)time(NULL);

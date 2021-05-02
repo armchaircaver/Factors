@@ -133,6 +133,7 @@
     <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
     <ClCompile Include="..\FactorsA\FactorsA.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
+    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
     <ClCompile Include="..\Project1\mulmod.cpp">
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AssemblyAndSourceCode</AssemblerOutput>
