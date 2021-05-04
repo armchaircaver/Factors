@@ -236,11 +236,11 @@ void testfunc(uint64_t mbase, uint64_t(*f)(uint64_t, uint64_t, uint64_t), std::s
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
-	uint64_t abase = mbase / 2;
-	uint64_t bbase = mbase / 2;
+	//uint64_t abase = mbase / 2;
+	//uint64_t bbase = mbase / 2;
 	for (uint64_t m = mbase; m < mbase + 1000; m+=2){
-		for (uint64_t b = bbase; b < bbase + 100; ++b){
-			for (uint64_t a = abase; a < abase + 100; ++a){
+		for (uint64_t b = mbase - 1000; b < mbase; ++b) {
+			for (uint64_t a = mbase - 1000; a < mbase; ++a) {
 				x += f(a, b, m);
 			}
 		}
@@ -263,12 +263,12 @@ void testfuncmagic(uint64_t mbase, uint64_t(*f)(uint64_t, uint64_t, struct mu), 
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
-	uint64_t abase = mbase / 2;
-	uint64_t bbase = mbase / 2;
+	//uint64_t abase = mbase / 2;
+	//uint64_t bbase = mbase / 2;
 	for (uint64_t m = mbase; m < mbase + 1000; m += 2){
 		struct mu mag = magicu(m);
-		for (uint64_t b = bbase; b < bbase + 100; ++b){
-			for (uint64_t a = abase; a < abase + 100; ++a){
+		for (uint64_t b = mbase - 1000; b < mbase; ++b) {
+			for (uint64_t a = mbase - 1000; a < mbase; ++a) {
 				x += f(a, b, mag);
 			}
 		}
@@ -281,7 +281,7 @@ void testfuncmagic(uint64_t mbase, uint64_t(*f)(uint64_t, uint64_t, struct mu), 
 
 }
 
-void testfuncRE(uint64_t mbase, std::string fname){
+void testfuncRE(uint64_t mbase, std::string fname) {
 	LARGE_INTEGER StartingTime, EndingTime, Frequency;
 	double Elapsed;
 
@@ -290,20 +290,21 @@ void testfuncRE(uint64_t mbase, std::string fname){
 	uint64_t m = mbase;
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
-	uint64_t x = 0;
-	uint64_t abase = mbase / 2;
-	uint64_t bbase = mbase / 2;
-	for (uint64_t m = mbase; m < mbase + 1000; m += 2){
+	uint64_t x = 0ull;
+
+	for (uint64_t m = mbase; m < mbase + 2; m += 2) {
 		struct RE re = RE_gen(m);
-		for (uint64_t b = bbase; b < bbase + 100; ++b){
-			for (uint64_t a = abase; a < abase + 100; ++a){
-				x += mulmodRE( a,  b, re);
-			}
+		uint64_t b = m - 5;
+		for (uint64_t i = 1; i < 100000000; ++i) {
+			b = mulmodRE(b, b, re);
 		}
+		x = b;
 	}
+
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
-	printf("%s x=%llu, time = %f \n", fname.c_str(), x, Elapsed);
+	printf("%s mbase=%llu, x=%llu, time = %f \n", fname.c_str(), mbase, x, Elapsed);
+
 
 }
 
@@ -317,19 +318,20 @@ void testfuncMontgomery(uint64_t mbase, std::string fname){
 	uint64_t m = mbase;
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
-	uint64_t abase = mbase / 2;
-	uint64_t bbase = mbase / 2;
-	for (uint64_t m = mbase; m < mbase + 10; m += 2){
-		struct monty M = prepareMonty(m);
-		for (uint64_t b = bbase; b < bbase + 1000; ++b){
-			for (uint64_t a = abase; a < abase + 1000; ++a){
-				x += montymulmod(a, b, M);
-			}
+
+	for (uint64_t m = mbase; m < mbase + 2; m += 2) {
+		monty_t M = prepareMonty(m);
+		uint64_t b = m - 5;
+		uint64_t bbar = modul64(b, 0, M.m);
+		for (uint64_t i = 1; i < 100000000; ++i) {
+			bbar = montmul(bbar, bbar, M);
 		}
+		x = reverse(bbar, M);
 	}
+
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
-	printf("%s x=%llu, time = %f \n", fname.c_str(), x, Elapsed);
+	printf("%s mbase=%llu, x=%llu, time = %f \n", fname.c_str(), mbase, x, Elapsed);
 
 }
 /*
@@ -430,41 +432,46 @@ uint64_t schrageFast(uint64_t a, uint64_t b, uint64_t m) {
 
 int main(int argc, char **argv){
 
-	for (int i = 7; i < 20; ++i){
+	for (int i = 7; i < 20; i+=4) {
 		uint64_t mbase = ipow(10, i) + 1;
 		uint64_t m = mbase;
 		uint64_t abase = mbase / 2;
 		uint64_t bbase = mbase / 2;
-		for (uint64_t m = mbase; m < mbase + 10; m += 2){
-			for (uint64_t b = bbase; b < bbase + 1000; ++b){
-				for (uint64_t a = abase; a < abase + 1000; ++a){
-					uint64_t x = mulmodSA(a, b, m);
-					uint64_t y = mulmodAS(a, b, m);
-					if (x != y){
-						printf("MISMATCH for a=%llu,b=%llu,m=%llu, x=%llu,y=%llu\n", a, b, m, x, y);
+		for (uint64_t m = mbase; m < mbase + 10; m += 2) {
+			monty_t M = prepareMonty(m);
+				for (uint64_t b = m - 1000; b < m; ++b) {
+					for (uint64_t a = m - 1000; a < m; ++a) {
+						uint64_t x = mulmodSA(a, b, m);
+						uint64_t y = mulmodAS(a, b, m);
+						uint64_t z = montymulmod(a, b, M);
+						if (x != y) {
+							printf("MISMATCH for a=%llu,b=%llu,m=%llu, x=%llu,y=%llu\n", a, b, m, x, y);
+						}
+						if (x != z) {
+							printf("MISMATCH mulmodSA and montymulmod for a=%llu,b=%llu,m=%llu, x=%llu,z=%llu\n", a, b, m, x, z);
+						}
 					}
 				}
-			}
 		}
 		printf("verified i=%d\n", i);
 	}
 
 
-	for (int i = 10; i < 64; ++i){
+	for (int i = 10; i < 64; i+=2){
 		uint64_t mbase = ipow(2, i) + 1;
-		printf("\n mbase=2^%d+1 = %llu \n",i, mbase);
+		//printf("\n numbers starting at mbase=2^%d+1 = %llu \n",i, mbase);
 		  
 		//testfunc(mbase, mulmod,         "mulmod       ");
 		//testfunc(mbase, mulmodSA, "mulmodSA     ");
-		testfunc(mbase, mulmodAS, "mulmodAS      ");
+		//testfunc(mbase, mulmodAS, "mulmodAS      ");
 		//testfunc(mbase, mulmod4, "mulmod4      ");
 		//testfunc(mbase, schrageFast,      "schrageFast  ");
 		//testfunc(mbase, mulmod_divluh,  "mulmod_divluh");
 		//testfunc(mbase, modmup,         "modmup       ");
 		//testfuncmagic(mbase, mulmod4m,    "mulmod4m     ");
-		testfuncmagic(mbase, mulmodRR,     "mulmodRR      ");
+		//testfuncmagic(mbase, mulmodRR,     "mulmodRR      ");
 		testfuncRE(mbase,                 "RE           ");
-		//testfuncMontgomery(mbase, "testfuncMontgomery");
+		testfuncMontgomery(mbase,         "Montgomery   ");
 		//testfunclibdivide(mbase, "mulmodlibdivide");
 
 	}

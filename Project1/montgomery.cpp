@@ -8,6 +8,8 @@ Works with gcc on Windows and Linux. */
 #include <stdio.h>
 #include <stdint.h>
 #include "montgomery.h"
+#include <intrin0.h>
+#include <immintrin.h>
 
 typedef unsigned long long uint64;
 typedef long long int64;
@@ -18,30 +20,12 @@ typedef long long int64;
 Parameters u and v are multiplied and the 128-bit product is placed in
 (*whi, *wlo). It is Knuth's Algorithm M from [Knu2] section 4.3.1.
 Derived from muldwu.c in the Hacker's Delight collection. */
+// superseded by intrinsic _umul128
 
 void mulul64(uint64 u, uint64 v, uint64 *whi, uint64 *wlo)
 {
-	uint64 u0, u1, v0, v1, k, t;
-	uint64 w0, w1, w2;
-
-	u1 = u >> 32; u0 = u & 0xFFFFFFFF;
-	v1 = v >> 32; v0 = v & 0xFFFFFFFF;
-
-	t = u0*v0;
-	w0 = t & 0xFFFFFFFF;
-	k = t >> 32;
-
-	t = u1*v0 + k;
-	w1 = t & 0xFFFFFFFF;
-	w2 = t >> 32;
-
-	t = u0*v1 + w1;
-	k = t >> 32;
-
-	*wlo = (t << 32) + w0;
-	*whi = u1*v1 + w2 + k;
-
-	return;
+	*wlo = _umul128(u, v, &*whi);
+	return;	
 }
 
 /* ---------------------------- modul64 ----------------------------- */
@@ -53,50 +37,33 @@ uint64 modul64(uint64 x, uint64 y, uint64 z) {
 	Must have x < z (to get a 64-bit result). This is
 	checked for. */
 
-	int64 i, t;
 
 	//printf("In modul64, x = %016llx, y = %016llx, z = %016llx\n", x, y, z);
 	if (x >= z) {
 		printf("Bad call to modul64, must have x < z.");
 		exit(1);
 	}
-	for (i = 1; i <= 64; i++) {  // Do 64 times.
-		t = (int64)x >> 63;       // All 1's if x(63) = 1.
-		x = (x << 1) | (y >> 63); // Shift x || y left
-		y = y << 1;               // one bit.
-		if ((x | t) >= z) {
-			x = x - z;
-			y = y + 1;
-		}
-	}
-	return x;                    // Quotient is y.
+	uint64_t r;
+	_udiv128(x, y, z, &r); // don't need the quotient function result
+	return r;	
 }
 
 /* ---------------------------- montmul ----------------------------- */
 
-uint64 montmul(uint64 abar, uint64 bbar, uint64 m,
-	uint64 mprime) {
+uint64 montmul(uint64 abar, uint64 bbar, monty_t & M) {
 
 	uint64 thi, tlo, tm, tmmhi, tmmlo, uhi, ulo, ov;
 
-	//printf("\nmontmul, abar = %016llx, bbar   = %016llx\n", abar, bbar);
-	//printf("            m = %016llx, mprime = %016llx\n", m, mprime);
-
-	/* t = abar*bbar. */
-
 	mulul64(abar, bbar, &thi, &tlo);  // t = abar*bbar.
-	//printf("montmul, thi = %016llx, tlo = %016llx\n", thi, tlo);
 
 	/* Now compute u = (t + ((t*mprime) & mask)*m) >> 64.
 	The mask is fixed at 2**64-1. Because it is a 64-bit
 	quantity, it suffices to compute the low-order 64
 	bits of t*mprime, which means we can ignore thi. */
 
-	tm = tlo*mprime;
-	//printf("montmul, tm = %016llx\n", tm);
+	tm = tlo*M.mprime;
 
-	mulul64(tm, m, &tmmhi, &tmmlo);   // tmm = tm*m.
-	//printf("montmul, tmmhi = %016llx, tmmlo = %016llx\n", tmmhi, tmmlo);
+	mulul64(tm, M.m, &tmmhi, &tmmlo);   // tmm = tm*m.
 
 	ulo = tlo + tmmlo;                // Add t to tmm
 	uhi = thi + tmmhi;                // (128-bit add).
@@ -105,20 +72,17 @@ uint64 montmul(uint64 abar, uint64 bbar, uint64 m,
 	// The above addition can overflow. Detect that here.
 
 	ov = (uhi < thi) | ((uhi == thi) & (ulo < tlo));
-	//printf("montmul, sum, uhi = %016llx, ulo = %016llx, ov = %lld\n", uhi, ulo, ov);
 
 	ulo = uhi;                   // Shift u right
 	uhi = 0;                     // 64 bit positions.
-	//printf("montmul, ulo = %016llx\n", ulo);
 
 	// if (ov > 0 || ulo >= m)      // If u >= m,
-	//    ulo = ulo - m;            // subtract m from u.
-	ulo = ulo - (m & ( (UINT64_MAX - (ov | (ulo >= m)))+1)  ); // Alternative
+	//    ulo = ulo - M.m;            // subtract m from u.
+	ulo = ulo - (M.m & ( (UINT64_MAX - (ov | (ulo >= M.m)))+1)  ); // Alternative
 	// with no branching.
-	//printf("montmul, final ulo = %016llx\n", ulo);
 
-	if (ulo >= m){
-		printf("ERROR in montmul, ulo = %016llx, m = %016llx\n", ulo, m);
+	if (ulo >= M.m){
+		printf("ERROR in montmul, ulo = %016llx, m = %016llx\n", ulo, M.m);
 		exit(1);
 	}
 	return ulo;
@@ -180,8 +144,8 @@ void xbinGCD(uint64 a, uint64 b, uint64 *pu, uint64 *pv)
 
 /* ------------------------------ main ------------------------------ */
 
-struct monty prepareMonty(uint64_t m){
-	struct monty M;
+monty_t prepareMonty(uint64_t m){
+	 monty_t M;
 
 	M.m = m;
 	M.hr = 0x8000000000000000LL;
@@ -194,19 +158,23 @@ struct monty prepareMonty(uint64_t m){
 	return M;
 }
 
-uint64_t montymulmod(uint64_t a, uint64_t b, struct monty M){
-	uint64_t abar = modul64(a, 0, M.m);
-	uint64_t bbar = modul64(b, 0, M.m);
-
-	uint64_t p = montmul(abar, bbar, M.m, M.mprime); /* Compute a*b (mod m). */
-	//printf("p before converting back = %016llx\n", p);
-
-	/* Convert p back to a normal number by p = (p*rinv)%m. */
-
+//convert montgomery space number p to an ordinary number
+uint64_t reverse(uint64_t p, monty_t M) {
 	uint64 phi, plo;
 	mulul64(p, M.rinv, &phi, &plo);
 	return modul64(phi, plo, M.m);
 }
+
+uint64_t montymulmod(uint64_t a, uint64_t b, monty_t M){
+	uint64_t abar = modul64(a, 0, M.m);
+	uint64_t bbar = modul64(b, 0, M.m);
+
+	uint64_t p = montmul(abar, bbar, M); /* Compute a*b (mod m). */
+
+	/* Convert p back to a normal number by p = (p*rinv)%m. */
+	return reverse(p, M);
+}
+
 
 #if 0  // ************ Main program removed **************
 int main(int argc, char* argv[]) {

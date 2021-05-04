@@ -103,7 +103,7 @@ void verify() {
 				printf("%llu, discrepancy is_primeFJ\n", n); exit(1);
 			}
 		}
-		printf("10^%d verified\n", index);
+		printf("2^%d verified\n", index);
 		index++;
 		if (index == 64)index = 5;
 	}
@@ -238,11 +238,11 @@ void simple_is_prime_compare() {
 
 int main(){
 
-	verify();
+	//verify();
 	simple_is_prime_compare();
 	simple_sprp_compare();
 	performance_trial();
-	longrun();
+	//longrun();
 
 	uint64_t seed = (uint64_t)time(NULL);
 

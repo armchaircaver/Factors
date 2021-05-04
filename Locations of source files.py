@@ -8,6 +8,6 @@ rootDir = 'C:\\Users\\Arthur\\source\\repos\\Factors'
 for dirName, subdirList, fileList in os.walk(rootDir):
     #print('Found directory: %s' % dirName)
     for fname in fileList:
-        if  fname.endswith('.cpp') or fname.endswith('.cc') or fname.endswith('.h') :
+        if  any( fname.endswith(x) for x in ('.cpp', '.cc', '.h', '.asm') ) :
           print( '%s' % fname, '\t',
                  '%s' % dirName.replace('C:\\Users\\Arthur\\source\\repos\\Factors\\',''))

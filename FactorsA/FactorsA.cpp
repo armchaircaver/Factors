@@ -15,7 +15,6 @@ int primefactor[PFSIZE] = { 0 };
 int MAXSMALLPRIME = 300;
 std::vector<int> smallprimes;
 bool verbose = false;
-bool sieved = false;
 
 void setMaxSmallPrime(int i){
 	MAXSMALLPRIME = i;
@@ -30,6 +29,7 @@ void setfactor(int m){
 }
 
 void sieve(){
+	static bool sieved = false;
 	if (sieved)
 		return;
 	setfactor(2);
@@ -44,6 +44,7 @@ void sieve(){
 	srand(int(time(NULL)));
 	sieved = true;
 }
+
 
 void factorise_small(int n, uint64_t *primearray, int &pasize) {
 	int i = primefactor[n];
@@ -234,8 +235,7 @@ char getmethod(){
 
 void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 
-	if (!sieved)
-		sieve();
+	sieve();
 
 	pasize = 0;
 

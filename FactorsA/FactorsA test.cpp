@@ -48,7 +48,7 @@ void verifyfactorisation(uint64_t n){
 void timetrial(int maxsp){
 	//printf("\nMAXSP\tbase\tnumbers\tmicrosec/number");
 	setMaxSmallPrime(maxsp);
-	printf("\nfactorisation timing for 10000 numbers starting with 10^n n=5..19 for maxsp=%d\n", maxsp);
+	printf("\nmaxsp=%d: ", maxsp);
 	for (int e = 5; e <= 19; e++){
 		uint64_t base = ipow(10, e);
 		double elapsed = 0.0;
@@ -59,7 +59,7 @@ void timetrial(int maxsp){
 			clock_t end = clock();
 			elapsed = double(end - begin) / CLOCKS_PER_SEC;
 		}
-		printf(",%4.1f", elapsed*1000000.0 / double(10000));
+		printf("%4.1f,", elapsed*1000000.0 / double(10000));
 	}
 }
 
@@ -198,6 +198,8 @@ int main(int argc, char **argv){
 
 
 	printf("\n");
+	printf("\nfactorisation timing for 10000 numbers starting with 10^n n=5..19 for maxsp values\n");
+
 	for (int e = 5; e <= 19; e++)
 		printf("10^%d\t", e);
 	timetrial(1000);

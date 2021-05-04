@@ -115,8 +115,9 @@ uint64 montmul(uint64 abar, uint64 bbar, uint64 m,
 	return ulo;
 }
 
-/*
-uint64 monty
-mulul64(p, rinv, &phi, &plo);
-p = modul64(phi, plo, m);
-*/
+
+uint64 reverse(uint64 p, uint64 rinv, uint64 m) {
+	uint64 phi, plo;
+	mulul64(p, rinv, &phi, &plo);
+	return modul64(phi, plo, m);
+}
