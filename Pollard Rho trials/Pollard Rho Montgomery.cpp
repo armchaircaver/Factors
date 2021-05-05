@@ -5,17 +5,6 @@
 #include <iostream>
 #include <tuple>
 
-// Intrinsic for 64x64->128 bit mult.
-/*
-inline std::pair<uint64_t, uint64_t> mulu64(uint64_t a, uint64_t b) {
-    uint64_t h, l;
-    asm("mulq %3"
-        : "=a"(l), "=d"(h)
-        : "a"(a), "rm"(b)
-        : "cc");
-    return std::make_pair(h, l);
-}
-*/
 std::pair<uint64_t, uint64_t> mulu64(uint64_t a, uint64_t b) {
     uint64_t high, low;
     low = _umul128(a, b, &high);
@@ -49,6 +38,8 @@ uint64_t montmul64(uint64_t a, uint64_t b, uint64_t N, uint64_t Nneginv) {
 }
 
 // Finds 2^-64 mod m and (-m)^-1 mod m for odd m (hacker's delight).
+// equivalent to xbinGCD ?
+
 inline std::pair<uint64_t, uint64_t> mont_modinv(uint64_t m) {
     uint64_t a = 1ull << 63;
     uint64_t u = 1;
@@ -87,12 +78,15 @@ uint64_t pollard_brent_montgomery(uint64_t n) {
     uint64_t b = a * 6364136223846793005ull + 1442695040888963407ull;
     rng = (a + b) ^ (a * b);
 
+    // y and c are "montgomery space" numbers
     uint64_t y = 1 + a % (n - 1);
     uint64_t c = 1 + b % (n - 3); // modified to avoid -2 mod n
     uint64_t m = 100;
     //printf("n= %llu, y=%llu, c=%llu \n", n, y, c);
 
+    // nneginv is m' (mprime) in Warren
     uint64_t nneginv = mont_modinv(n).second;
+    
 
     uint64_t g=1, r, q, x, ys;
     q = r = 1;
@@ -128,7 +122,7 @@ uint64_t pollard_brent_montgomery(uint64_t n) {
 
 int tries = 0;
 uint64_t pollard_brent_montgomery_retry(uint64_t n) {
-    uint64_t f;
+    uint64_t f=0;
     tries = 0;
     do {
         f = pollard_brent_montgomery(n);

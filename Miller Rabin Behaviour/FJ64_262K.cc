@@ -46,13 +46,10 @@ void xbinGCD(uint64 a, uint64 b, uint64 *pu, uint64 *pv)  {
 
 uint64 modul64(uint64 x, uint64 y, uint64 z) {
 
-
     /* Divides (x || y) by z, for 64-bit integers x, y,
     and z, giving the remainder (modulus) as the result.
     Must have x < z (to get a 64-bit result). This is
     checked for. */
-
-    int64 i, t;
 
     if (x >= z) {
         printf("Bad call to modul64, must have x < z.");
@@ -60,53 +57,16 @@ uint64 modul64(uint64 x, uint64 y, uint64 z) {
     }
 
     // can now use _udiv128 in VS19
-
     uint64_t r;
-    uint64_t q = _udiv128(x, y, z, &r);
-    return r;
-
-    /*
-    for (i = 1; i <= 64; i++) { // Do 64 times. 
-        t = (int64)x >> 63; // All 1's if x(63) = 1. 
-        x = (x << 1) | (y >> 63); // Shift x || y left 
-        y = y << 1; // one bit. 
-        if ((x | t) >= z) {
-            x = x - z;
-            y = y + 1;
-        }
-    }
-    return x;
-    */
+    _udiv128(x, y, z, &r);
+    return r;   
 }
 
 
 void mulul64(uint64 u, uint64 v, uint64* whi, uint64* wlo) {
     *wlo = _umul128(u, v, &*whi);
     return;
-    /*
-  uint64 u0, u1, v0, v1, k, t;
-  uint64 w0, w1, w2;
-
-  u1 = u >> 32; u0 = u & 0xFFFFFFFF;
-  v1 = v >> 32; v0 = v & 0xFFFFFFFF;
-
-  t = u0*v0;
-  w0 = t & 0xFFFFFFFF;
-  k = t >> 32;
-
-  t = u1*v0 + k;
-  w1 = t & 0xFFFFFFFF;
-  w2 = t >> 32;
-
-  t = u0*v1 + w1;
-  k = t >> 32;
-
-  *wlo = (t << 32) + w0;
-  *whi = u1*v1 + w2 + k;
-
-  return;
-  */
-}
+    }
 
 
 uint64 montmul(uint64 abar, uint64 bbar, uint64 m, uint64 mprime) { 
@@ -194,6 +154,3 @@ bool is_prime_2_64(uint64 a) {
     if (a<121) return (a>1);
      return is_SPRP(2ull,a) && is_SPRP(bases[hashh(a)],a);
 }
-
-
-//int main(void) {}

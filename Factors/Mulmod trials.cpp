@@ -153,9 +153,6 @@ uint64_t mulmod_divluh(uint64_t p, uint64_t q, uint64_t m){
 }
 
 
-
-
-
 // from http://apps.topcoder.com/forums/;jsessionid=4BF5C317BC7B4253C4D7F3FB9ACE2BB9?module=Thread&threadID=670443&start=0&mc=9#1221719
 // doesn't appear to work for m>=2^63
 // seems slower than the best algorithms
@@ -232,19 +229,17 @@ void testfunc(uint64_t mbase, uint64_t(*f)(uint64_t, uint64_t, uint64_t), std::s
 
 	QueryPerformanceFrequency(&Frequency);
 
-	uint64_t m = mbase;
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
-	//uint64_t abase = mbase / 2;
-	//uint64_t bbase = mbase / 2;
-	for (uint64_t m = mbase; m < mbase + 1000; m+=2){
-		for (uint64_t b = mbase - 1000; b < mbase; ++b) {
-			for (uint64_t a = mbase - 1000; a < mbase; ++a) {
-				x += f(a, b, m);
-			}
-		}
-	}
+	
+	uint64_t m = mbase;
+	uint64_t b = m - 5;
+	for (uint64_t i = 1; i < 100000000; ++i)
+		b = f(b, b, m);
+
+	x = b;
+
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
 	//clock_t end = clock();
@@ -259,20 +254,19 @@ void testfuncmagic(uint64_t mbase, uint64_t(*f)(uint64_t, uint64_t, struct mu), 
 
 	QueryPerformanceFrequency(&Frequency);
 
-	uint64_t m = mbase;
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
-	//uint64_t abase = mbase / 2;
-	//uint64_t bbase = mbase / 2;
-	for (uint64_t m = mbase; m < mbase + 1000; m += 2){
-		struct mu mag = magicu(m);
-		for (uint64_t b = mbase - 1000; b < mbase; ++b) {
-			for (uint64_t a = mbase - 1000; a < mbase; ++a) {
-				x += f(a, b, mag);
-			}
-		}
-	}
+
+	uint64_t m = mbase;
+	struct mu mag = magicu(m);
+	uint64_t b = m - 5;
+	for (uint64_t i = 1; i < 100000000; ++i) 
+		b = f(b, b, mag);
+	
+	x = b;
+
+	
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
 	//clock_t end = clock();
@@ -287,19 +281,17 @@ void testfuncRE(uint64_t mbase, std::string fname) {
 
 	QueryPerformanceFrequency(&Frequency);
 
-	uint64_t m = mbase;
 	//clock_t begin = clock();
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0ull;
 
-	for (uint64_t m = mbase; m < mbase + 2; m += 2) {
-		struct RE re = RE_gen(m);
-		uint64_t b = m - 5;
-		for (uint64_t i = 1; i < 100000000; ++i) {
-			b = mulmodRE(b, b, re);
-		}
-		x = b;
+	uint64_t m = mbase;
+	struct RE re = RE_gen(m);
+	uint64_t b = m - 5;
+	for (uint64_t i = 1; i < 100000000; ++i) {
+		b = mulmodRE(b, b, re);
 	}
+	x = b;
 
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
@@ -309,25 +301,23 @@ void testfuncRE(uint64_t mbase, std::string fname) {
 }
 
 
-void testfuncMontgomery(uint64_t mbase, std::string fname){
+void testfuncMontgomery(uint64_t mbase, std::string fname) {
 	LARGE_INTEGER StartingTime, EndingTime, Frequency;
 	double Elapsed;
 
 	QueryPerformanceFrequency(&Frequency);
 
-	uint64_t m = mbase;
 	QueryPerformanceCounter(&StartingTime);
 	uint64_t x = 0;
 
-	for (uint64_t m = mbase; m < mbase + 2; m += 2) {
-		monty_t M = prepareMonty(m);
-		uint64_t b = m - 5;
-		uint64_t bbar = modul64(b, 0, M.m);
-		for (uint64_t i = 1; i < 100000000; ++i) {
-			bbar = montmul(bbar, bbar, M);
-		}
-		x = reverse(bbar, M);
+	uint64_t m = mbase;
+	monty_t M = prepareMonty(m);
+	uint64_t b = m - 5;
+	uint64_t bbar = modul64(b, 0, M.m);
+	for (uint64_t i = 1; i < 100000000; ++i) {
+		bbar = montmul(bbar, bbar, M);
 	}
+	x = reverse(bbar, M);
 
 	QueryPerformanceCounter(&EndingTime);
 	Elapsed = double(EndingTime.QuadPart - StartingTime.QuadPart) / double(Frequency.QuadPart);
@@ -432,6 +422,7 @@ uint64_t schrageFast(uint64_t a, uint64_t b, uint64_t m) {
 
 int main(int argc, char **argv){
 
+	// verify that different modular multiplications return the same result
 	for (int i = 7; i < 20; i+=4) {
 		uint64_t mbase = ipow(10, i) + 1;
 		uint64_t m = mbase;
@@ -453,11 +444,11 @@ int main(int argc, char **argv){
 					}
 				}
 		}
-		printf("verified i=%d\n", i);
+		printf("verified for numbers starting 2^%d\n", i);
 	}
 
 
-	for (int i = 10; i < 64; i+=2){
+	for (int i = 20; i < 64; i+=2){
 		uint64_t mbase = ipow(2, i) + 1;
 		//printf("\n numbers starting at mbase=2^%d+1 = %llu \n",i, mbase);
 		  
@@ -469,7 +460,7 @@ int main(int argc, char **argv){
 		//testfunc(mbase, mulmod_divluh,  "mulmod_divluh");
 		//testfunc(mbase, modmup,         "modmup       ");
 		//testfuncmagic(mbase, mulmod4m,    "mulmod4m     ");
-		//testfuncmagic(mbase, mulmodRR,     "mulmodRR      ");
+		testfuncmagic(mbase, mulmodRR,     "mulmodRR      ");
 		testfuncRE(mbase,                 "RE           ");
 		testfuncMontgomery(mbase,         "Montgomery   ");
 		//testfunclibdivide(mbase, "mulmodlibdivide");

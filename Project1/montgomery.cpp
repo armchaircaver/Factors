@@ -113,7 +113,6 @@ does not find u and v st. u*a - v*b = 1, but rather u*(2a) - v*b = 1. */
 void xbinGCD(uint64 a, uint64 b, uint64 *pu, uint64 *pv)
 {
 	uint64 alpha, beta, u, v;
-	//printf("Doing GCD(%llx hex, %llx hex)\n", a, b);
 
 	u = 1; v = 0;
 	alpha = a; beta = b;         // Note that alpha is even and beta is odd.
@@ -133,10 +132,8 @@ void xbinGCD(uint64 a, uint64 b, uint64 *pu, uint64 *pv)
 			u = ((u ^ beta) >> 1) + (u & beta);
 			v = (v >> 1) + alpha;
 		}
-		//    printf("After,  a u v = %016llx %016llx %016llx\n", a, u, v);
 	}
 
-	// printf("At end,    a u v = %016llx %016llx %016llx\n", a, u, v);
 	*pu = u;
 	*pv = v;
 	return;
@@ -145,7 +142,7 @@ void xbinGCD(uint64 a, uint64 b, uint64 *pu, uint64 *pv)
 /* ------------------------------ main ------------------------------ */
 
 monty_t prepareMonty(uint64_t m){
-	 monty_t M;
+	 monty_t M{};
 
 	M.m = m;
 	M.hr = 0x8000000000000000LL;
@@ -159,13 +156,16 @@ monty_t prepareMonty(uint64_t m){
 }
 
 //convert montgomery space number p to an ordinary number
-uint64_t reverse(uint64_t p, monty_t M) {
+uint64_t reverse(uint64_t p, monty_t & M) {
 	uint64 phi, plo;
 	mulul64(p, M.rinv, &phi, &plo);
 	return modul64(phi, plo, M.m);
 }
 
-uint64_t montymulmod(uint64_t a, uint64_t b, monty_t M){
+uint64_t montymulmod(uint64_t a, uint64_t b, monty_t &M){
+	// executes the full sequence of momtgomery multiplication steps
+	// very costly, so don't use in practice but just used for verification of the steps
+
 	uint64_t abar = modul64(a, 0, M.m);
 	uint64_t bbar = modul64(b, 0, M.m);
 

@@ -16,8 +16,8 @@ uint64_t montmul(uint64_t abar, uint64_t bbar, monty_t &M);
 
 uint64_t modul64(uint64_t x, uint64_t y, uint64_t z);
 
-uint64_t montymulmod(uint64_t a, uint64_t b, struct monty_t M);
+uint64_t montymulmod(uint64_t a, uint64_t b, struct monty_t &M);
 
-uint64_t reverse(uint64_t p, monty_t M);
+uint64_t reverse(uint64_t p, monty_t &M);
 
 #endif
