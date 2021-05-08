@@ -32,7 +32,6 @@
     <ClCompile Include="FactorsA.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Factors\ipow.h" />
     <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h" />
     <ClInclude Include="FactorsA.h" />
   </ItemGroup>
@@ -137,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Arthur\source\repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>All</AssemblerOutput>
     </ClCompile>
     <Link>

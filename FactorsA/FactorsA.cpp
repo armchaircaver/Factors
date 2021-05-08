@@ -12,12 +12,16 @@
 
 const uint64_t PFSIZE = 1000L * 1000L;
 int primefactor[PFSIZE] = { 0 };
-int MAXSMALLPRIME = 300;
+int NUMSMALLPRIMES;
 std::vector<int> smallprimes;
 bool verbose = false;
 
-void setMaxSmallPrime(int i){
-	MAXSMALLPRIME = i;
+void setNumSmallPrimes(int i){
+	if (i > smallprimes.size()) {
+		printf("ERROR attempting to set NUMSMALLPRIMES=%d, larger than smallprimes size = %zd\n",i,smallprimes.size() );
+		exit(1);
+	}
+	NUMSMALLPRIMES = i;
 }
 
 void setVerbose(bool v){
@@ -37,15 +41,16 @@ void sieve(){
 	for (int k = 5; k*k<PFSIZE; k += 6) {
 		setfactor(k); setfactor(k + 2);
 	}
-	for (int p = 2; p<MAXSMALLPRIME; p++) {
+	for (int p = 2; smallprimes.size() < 100; p++) {
 		if (primefactor[p] == 0)
 			smallprimes.push_back(p);
 	}
+	NUMSMALLPRIMES = 10;
 	srand(int(time(NULL)));
 	sieved = true;
 }
 
-
+//factorise using pre-calculated array primefactor[], where primefactor[x] is a prime factor of x
 void factorise_small(int n, uint64_t *primearray, int &pasize) {
 	int i = primefactor[n];
 	while (i != 0){
@@ -250,10 +255,12 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 		return;
 	}
 	
+	// try trial division
 	method = 'L';
-	int p = 1;
-	for (auto pp = smallprimes.begin(); pp != smallprimes.end() && p*p <= n && p <= MAXSMALLPRIME; ++pp) {
-		p = *pp;
+	for (auto it = smallprimes.begin(); it != smallprimes.begin() + NUMSMALLPRIMES ; ++it) {
+		uint64_t p = *it;
+		if (p * p > n)
+			break;
 		while (n%p == 0){
 			primearray[pasize++] = (uint64_t)p;
 			n /= p;

@@ -32,6 +32,7 @@ void verifyfactorisation(uint64_t n){
 	int pasize=0;
 	uint64_t primearray[64];
 	factorise(n, primearray, pasize);
+	/*
 	uint64_t c = 1;
 	for (int it = 0; it != pasize; ++it) {
 		c *= primearray[it];
@@ -42,13 +43,14 @@ void verifyfactorisation(uint64_t n){
 		printf("\n");
 		exit(1);
 	}
+	*/
 }
 
 
-void timetrial(int maxsp){
+void timetrial(int numsp){
 	//printf("\nMAXSP\tbase\tnumbers\tmicrosec/number");
-	setMaxSmallPrime(maxsp);
-	printf("\nmaxsp=%d: ", maxsp);
+	setNumSmallPrimes(numsp);
+	printf("\nNumSmallPrimes=%d: ", numsp);
 	for (int e = 5; e <= 19; e++){
 		uint64_t base = ipow(10, e);
 		double elapsed = 0.0;
@@ -68,7 +70,6 @@ int main(int argc, char **argv){
 	clock_t begin = clock();
 	//sieve();
 	clock_t end = clock();
-	setMaxSmallPrime(10);
 	//printf("called sieve\n");
 	int pasize = 0;
 	uint64_t primearray[64];
@@ -124,7 +125,6 @@ int main(int argc, char **argv){
 	factorise(720, primearray, pasize);
 	printarray(primearray, pasize); printf("\n");
 
-	setMaxSmallPrime(10000);
 	// some semi primes to test the algorithm
 	std::vector<uint64_t> semis = { 18446743721522234449, 10000000000000000049, 8980935344490257, 100000000000000009 };
 	for (uint32_t i = 0; i < semis.size(); i++){
@@ -202,12 +202,12 @@ int main(int argc, char **argv){
 
 	for (int e = 5; e <= 19; e++)
 		printf("10^%d\t", e);
-	timetrial(1000);
+	timetrial(1);
+	timetrial(4);
+	timetrial(7);
 	timetrial(10);
-	timetrial(100);
-	timetrial(10000);
-	timetrial(100000);
-	timetrial(1000000);
+	timetrial(30);
+	timetrial(60);
 	
 	return 0L;
 }
