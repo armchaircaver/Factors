@@ -113,7 +113,7 @@ uint64_t pollard_brent_montgomery(uint64_t n) {
         exit(1);
     }
 
-    // Random number generator from D.E. Knuth
+    // Random number Linear Congruential Generator MMIX from D.E. Knuth
     static uint64_t rng = 0xdeafbeef;
     uint64_t a = rng * 6364136223846793005ull + 1442695040888963407ull;
     uint64_t b = a * 6364136223846793005ull + 1442695040888963407ull;

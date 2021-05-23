@@ -53,14 +53,12 @@ void timetrial(int numsp){
 	printf("\nNumSmallPrimes=%d: ", numsp);
 	for (int e = 5; e <= 19; e++){
 		uint64_t base = ipow(10, e);
-		double elapsed = 0.0;
 		clock_t begin = clock();
 		
-		for (int n = 0; n < 10000; n++){
+		for (int n = 0; n < 30000; n++)
 			verifyfactorisation(base + n);
-			clock_t end = clock();
-			elapsed = double(end - begin) / CLOCKS_PER_SEC;
-		}
+		clock_t end = clock();
+		double elapsed = double(end - begin) / CLOCKS_PER_SEC;
 		printf("%4.1f,", elapsed*1000000.0 / double(10000));
 	}
 }
@@ -208,6 +206,7 @@ int main(int argc, char **argv){
 	timetrial(10);
 	timetrial(30);
 	timetrial(60);
-	
+	timetrial(100);
+
 	return 0L;
 }

@@ -45,7 +45,7 @@ void sieve(){
 		if (primefactor[p] == 0)
 			smallprimes.push_back(p);
 	}
-	NUMSMALLPRIMES = 10;
+	NUMSMALLPRIMES = 60;  // from trials, this seems an optimal value
 	srand(int(time(NULL)));
 	sieved = true;
 }
