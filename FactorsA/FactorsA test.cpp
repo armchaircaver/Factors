@@ -47,20 +47,42 @@ void verifyfactorisation(uint64_t n){
 }
 
 
-void timetrial(int numsp){
+void smallprimetrial() {
 	//printf("\nMAXSP\tbase\tnumbers\tmicrosec/number");
-	setNumSmallPrimes(numsp);
-	printf("\nNumSmallPrimes=%d: ", numsp);
-	for (int e = 5; e <= 19; e++){
-		uint64_t base = ipow(10, e);
+
+	// construct a list of smooth numbers
+	printf("constructing smooth numbers...");
+	std::vector<uint64_t> smoothnumbers;
+	uint64_t base = 1000000000000000000ull;
+	for (int j = 0; j < 100000; j++)
+		for (auto p : { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,
+						73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,
+						179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,
+						283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409 })
+		{
+			uint64_t n = 1ull;
+			int e = (int)(log(1.8446744e+19) / log((double)p));
+			for (int i = 0; i < e; i++) {
+				n *= p;
+				smoothnumbers.push_back(n);
+			}
+		}
+	printf("completed\n");
+	//for (auto s : smoothnumbers)
+	//	printf("%llu, ", s);
+	//printf("\n");
+
+	for (auto numsp : { 100 }){ // { 1, 3, 7, 10, 30, 60, 100 }) {
+		setNumSmallPrimes(numsp);
+		printf("NumSmallPrimes=%d: ", numsp);
 		clock_t begin = clock();
-		
-		for (int n = 0; n < 30000; n++)
-			verifyfactorisation(base + n);
+		for (auto n : smoothnumbers)
+			verifyfactorisation(n);
 		clock_t end = clock();
 		double elapsed = double(end - begin) / CLOCKS_PER_SEC;
-		printf("%4.1f,", elapsed*1000000.0 / double(10000));
+		printf(" %4.1f sec\n", elapsed);
 	}
+
 }
 
 
@@ -72,6 +94,7 @@ int main(int argc, char **argv){
 	int pasize = 0;
 	uint64_t primearray[64];
 
+	/*
 	printf("\nTesting totient\n");
 	for (uint64_t n = 1; n < 100; n += 7){
 		printf("%llu, totient = %llu\n", n, totient(n));
@@ -197,16 +220,9 @@ int main(int argc, char **argv){
 
 	printf("\n");
 	printf("\nfactorisation timing for 10000 numbers starting with 10^n n=5..19 for maxsp values\n");
+	*/
 
-	for (int e = 5; e <= 19; e++)
-		printf("10^%d\t", e);
-	timetrial(1);
-	timetrial(4);
-	timetrial(7);
-	timetrial(10);
-	timetrial(30);
-	timetrial(60);
-	timetrial(100);
+	smallprimetrial();
 
 	return 0L;
 }

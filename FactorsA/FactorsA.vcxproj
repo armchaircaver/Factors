@@ -34,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h" />
     <ClInclude Include="FactorsA.h" />
+    <ClInclude Include="libdivide.h" />
   </ItemGroup>
   <ItemGroup>
     <YASM Include="..\Project1\mod64.asm">

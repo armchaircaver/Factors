@@ -43,6 +43,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pollard Rho trials", "Polla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Explore montgomery pollard rho", "Explore montgomery pollard rho\Explore montgomery pollard rho.vcxproj", "{39905F23-D93B-4697-A3CE-EA6BBABB8C3C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test libdivide performance", "Test libdivide performance\Test libdivide performance.vcxproj", "{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -258,6 +260,18 @@ Global
 		{39905F23-D93B-4697-A3CE-EA6BBABB8C3C}.Release|Win32.Build.0 = Release|Win32
 		{39905F23-D93B-4697-A3CE-EA6BBABB8C3C}.Release|x64.ActiveCfg = Release|x64
 		{39905F23-D93B-4697-A3CE-EA6BBABB8C3C}.Release|x64.Build.0 = Release|x64
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|Win32.Build.0 = Debug|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|x64.ActiveCfg = Debug|x64
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Debug|x64.Build.0 = Debug|x64
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|Win32.ActiveCfg = Release|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|Win32.Build.0 = Release|Win32
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|x64.ActiveCfg = Release|x64
+		{3E8F2FA2-0FA4-453E-B5A6-F93B7E5D3E12}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

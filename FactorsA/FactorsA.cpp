@@ -8,15 +8,20 @@
 #include <unordered_set>
 #include "RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
+#include "libdivide.h"
 
 
 const uint64_t PFSIZE = 1000L * 1000L;
 int primefactor[PFSIZE] = { 0 };
 int NUMSMALLPRIMES;
 std::vector<int> smallprimes;
+std::vector< libdivide::divider<uint64_t> > smallprimedividers;
 bool verbose = false;
 
+void sieve(); // implemented lower down
+
 void setNumSmallPrimes(int i){
+	sieve();
 	if (i > smallprimes.size()) {
 		printf("ERROR attempting to set NUMSMALLPRIMES=%d, larger than smallprimes size = %zd\n",i,smallprimes.size() );
 		exit(1);
@@ -42,12 +47,17 @@ void sieve(){
 		setfactor(k); setfactor(k + 2);
 	}
 	for (int p = 2; smallprimes.size() < 100; p++) {
-		if (primefactor[p] == 0)
+		if (primefactor[p] == 0) {
 			smallprimes.push_back(p);
+			// see https://libdivide.com/documentation.html
+			libdivide::divider<uint64_t> fast_d((uint64_t)p);
+			smallprimedividers.push_back(fast_d);
+		}
 	}
 	NUMSMALLPRIMES = 60;  // from trials, this seems an optimal value
 	srand(int(time(NULL)));
 	sieved = true;
+	printf("called sieve\n");
 }
 
 //factorise using pre-calculated array primefactor[], where primefactor[x] is a prime factor of x
@@ -192,6 +202,7 @@ uint64_t pollard_rhoRE(uint64_t n) {
 
 
 void factorise_large(uint64_t n, uint64_t *primearray, int &pasize){
+	//printf("calling factorise_large for n=%llu\n", n);
 	uint64_t f; // might return a factor if is_prime returns false
 	uint64_t p, q;
 
@@ -256,7 +267,10 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 	}
 	
 	// try trial division
+	
+	
 	method = 'L';
+	/*
 	for (auto it = smallprimes.begin(); it != smallprimes.begin() + NUMSMALLPRIMES ; ++it) {
 		uint64_t p = *it;
 		if (p * p > n)
@@ -266,6 +280,26 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 			n /= p;
 		};
 	};
+	*/
+
+	// trial division using libdivide
+	// based on timing trials, libdivide halves the time spend in trial division	
+	while ((n & 1) == 0) {
+		primearray[pasize++] = 2ull;
+		n >>= 1;
+	}
+	for (int i = 1; i < NUMSMALLPRIMES; ++i) {
+		uint64_t p = smallprimes[i];
+		if ( p*p>n )  
+			break;
+		uint64_t q = n / smallprimedividers[i];
+		while ( q * (uint64_t)p == n ) {
+			primearray[pasize++] = (uint64_t)p;
+			n = q;
+			q = n / smallprimedividers[i];
+		}
+	}
+	
 
 	if (n == 1)
 		return ;
