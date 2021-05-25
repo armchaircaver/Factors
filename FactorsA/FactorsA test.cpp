@@ -28,22 +28,17 @@ void test(uint64_t n){
 	printarray(primearray, pasize);
 }
 
-void verifyfactorisation(uint64_t n){
+void performfactorisation(uint64_t n){
 	int pasize=0;
 	uint64_t primearray[64];
 	factorise(n, primearray, pasize);
-	/*
-	uint64_t c = 1;
-	for (int it = 0; it != pasize; ++it) {
-		c *= primearray[it];
-	}
-	if (c != n){
-		printf("\n MISMATCH %llu\n", n);
-		printarray(primearray, pasize);
-		printf("\n");
-		exit(1);
-	}
-	*/
+}
+
+uint64_t knuthrand() {
+	// Random number Linear Congruential Generator MMIX from D.E. Knuth
+	static uint64_t rng = 0xabbababe;
+	rng = rng * 6364136223846793005ull + 1442695040888963407ull;
+	return rng;
 }
 
 
@@ -54,7 +49,7 @@ void smallprimetrial() {
 	printf("constructing smooth numbers...");
 	std::vector<uint64_t> smoothnumbers;
 	uint64_t base = 1000000000000000000ull;
-	for (int j = 0; j < 100000; j++)
+	for (int j = 0; j < 1000; j++)
 		for (auto p : { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,
 						73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,
 						179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,
@@ -67,17 +62,40 @@ void smallprimetrial() {
 				smoothnumbers.push_back(n);
 			}
 		}
-	printf("completed\n");
-	//for (auto s : smoothnumbers)
-	//	printf("%llu, ", s);
-	//printf("\n");
+	printf("completed. %d smooth numbers.\n", (int)smoothnumbers.size() );
 
-	for (auto numsp : { 100 }){ // { 1, 3, 7, 10, 30, 60, 100 }) {
+	// construct random numbers
+	std::vector<uint64_t> randomnumbers;
+
+	// keep doubling p2 until it wraps around to zero
+	for (uint64_t p2 = 1024ull; p2; p2 <<= 1) 
+		for (int i = 0; i < 10000; i++) 
+			randomnumbers.push_back( knuthrand() % p2 );
+
+	for (int i = 0; i < 20000; i++)
+		randomnumbers.push_back( knuthrand() );
+	printf("created %d random numbers\n", (int)randomnumbers.size());
+
+
+	printf("smooth number performance:\n");
+	for (auto numsp : { 3, 7, 10, 30, 60, 100 }) {
 		setNumSmallPrimes(numsp);
 		printf("NumSmallPrimes=%d: ", numsp);
 		clock_t begin = clock();
 		for (auto n : smoothnumbers)
-			verifyfactorisation(n);
+			performfactorisation(n);
+		clock_t end = clock();
+		double elapsed = double(end - begin) / CLOCKS_PER_SEC;
+		printf(" %4.1f sec\n", elapsed);
+	}
+
+	printf("random number performance:\n");
+	for (auto numsp : { 3, 7, 10, 30, 60, 100 }) {
+		setNumSmallPrimes(numsp);
+		printf("NumSmallPrimes=%d: ", numsp);
+		clock_t begin = clock();
+		for (auto n : randomnumbers)
+			performfactorisation(n);
 		clock_t end = clock();
 		double elapsed = double(end - begin) / CLOCKS_PER_SEC;
 		printf(" %4.1f sec\n", elapsed);
@@ -94,7 +112,7 @@ int main(int argc, char **argv){
 	int pasize = 0;
 	uint64_t primearray[64];
 
-	/*
+	
 	printf("\nTesting totient\n");
 	for (uint64_t n = 1; n < 100; n += 7){
 		printf("%llu, totient = %llu\n", n, totient(n));
@@ -157,7 +175,7 @@ int main(int argc, char **argv){
 		printarray(primearray, pasize);
 		clock_t end = clock();
 		printf(" %10.6f s", double(end - begin) / CLOCKS_PER_SEC);
-		verifyfactorisation(n);
+		performfactorisation(n);
 
 	}
 	
@@ -176,7 +194,7 @@ int main(int argc, char **argv){
 		QueryPerformanceCounter(&StartingTime);
 		pasize = 0;
 		factorise(m, primearray, pasize);
-		verifyfactorisation(m);
+		performfactorisation(m);
 		QueryPerformanceCounter(&EndingTime);
 		ElapsedMicroseconds = double(EndingTime.QuadPart - StartingTime.QuadPart)*1000000.0 / double(Frequency.QuadPart);
 
@@ -195,7 +213,7 @@ int main(int argc, char **argv){
 		pasize = 0;
 		factorise(n, primearray, pasize);
 		printarray(primearray, pasize);
-		verifyfactorisation(n);
+		performfactorisation(n);
 	}
 
 	std::vector<uint64_t> A141768 = { 9, 25, 49, 91, 341, 481, 703, 1541, 1891, 2701, 5461, 6533,
@@ -210,7 +228,7 @@ int main(int argc, char **argv){
 		pasize = 0;
 		factorise(n, primearray, pasize);
 		printarray(primearray, pasize);
-		verifyfactorisation(n);
+		performfactorisation(n);
 		if (pasize < 2){
 			printf("pseudoprime not detected\n");
 			exit(1);
@@ -220,7 +238,7 @@ int main(int argc, char **argv){
 
 	printf("\n");
 	printf("\nfactorisation timing for 10000 numbers starting with 10^n n=5..19 for maxsp values\n");
-	*/
+	
 
 	smallprimetrial();
 

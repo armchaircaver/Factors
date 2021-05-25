@@ -54,6 +54,7 @@ void sieve(){
 			smallprimedividers.push_back(fast_d);
 		}
 	}
+
 	NUMSMALLPRIMES = 60;  // from trials, this seems an optimal value
 	srand(int(time(NULL)));
 	sieved = true;
@@ -90,6 +91,7 @@ uint64_t squareaddmodMU(uint64_t y, uint64_t  a, uint64_t n, mu& magicn) {
 	y = mulmodRR(y, y, magicn);
 	return addMod(y, a, n);
 }
+
 
 uint64_t pollard_rhoMU(uint64_t n) {
 	//pollard rho algorithm with brent variant, using magic numbers to divide by multiplication
@@ -144,6 +146,7 @@ uint64_t pollard_rhoMU(uint64_t n) {
 
 	return g;
 }
+
 
 uint64_t pollard_rhoRE(uint64_t n) {
 	// pollard rho algorithm with brent variation, using Rutten-Eekelin division
@@ -284,16 +287,19 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 
 	// trial division using libdivide
 	// based on timing trials, libdivide halves the time spend in trial division	
+
+	// handle factors of 2 using bit twiddling
 	while ((n & 1) == 0) {
 		primearray[pasize++] = 2ull;
 		n >>= 1;
 	}
+	// trial division starting from 3
 	for (int i = 1; i < NUMSMALLPRIMES; ++i) {
 		uint64_t p = smallprimes[i];
-		if ( p*p>n )  
+		if (n < PFSIZE)
 			break;
 		uint64_t q = n / smallprimedividers[i];
-		while ( q * (uint64_t)p == n ) {
+		while (q * (uint64_t)p == n) {
 			primearray[pasize++] = (uint64_t)p;
 			n = q;
 			q = n / smallprimedividers[i];
