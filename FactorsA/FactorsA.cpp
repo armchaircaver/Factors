@@ -9,77 +9,93 @@
 #include "RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 #include "libdivide.h"
+#include <random>
 
+typedef std::linear_congruential_engine<
+	uint64_t, 6364136223846793005U, 1442695040888963407U, 0U>
+	knuth_mmix_t;  /* Knuth's preferred 64-bit LCG */
 
+/*
 const uint64_t PFSIZE = 1000L * 1000L;
 int primefactor[PFSIZE] = { 0 };
 int NUMSMALLPRIMES;
 std::vector<int> smallprimes;
 std::vector< libdivide::divider<uint64_t> > smallprimedividers;
+*/
 bool verbose = false;
+knuth_mmix_t mmix_rng(1234567ull);
 
-void sieve(); // implemented lower down
-
-void setNumSmallPrimes(int i){
-	sieve();
-	if (i > smallprimes.size()) {
-		printf("ERROR attempting to set NUMSMALLPRIMES=%d, larger than smallprimes size = %zd\n",i,smallprimes.size() );
-		exit(1);
-	}
-	NUMSMALLPRIMES = i;
-}
-
-void setVerbose(bool v){
+void setVerbose(bool v) {
 	verbose = v;
 }
-void setfactor(int m){
-	if (primefactor[m] == 0)
-		for (int j = m*m; j<PFSIZE; j += m) primefactor[j] = m;
-}
 
-void sieve(){
-	static bool sieved = false;
-	if (sieved)
-		return;
-	setfactor(2);
-	setfactor(3);
-	for (int k = 5; k*k<PFSIZE; k += 6) {
-		setfactor(k); setfactor(k + 2);
+class Sieve {
+
+public:
+	std::vector<int> smallprimes;
+	int NUMSMALLPRIMES;
+	std::vector< libdivide::divider<uint64_t> > smallprimedividers;
+	static const int PFSIZE = 1000L * 1000L;
+
+	// primefactor[n] is 0 if n is prime, otherwise holds a prime factor of n.
+	int primefactor[PFSIZE] = { 0 };
+
+
+	void setfactor(int m) {
+		if (primefactor[m] == 0)
+			for (int j = m * m; j < PFSIZE; j += m) primefactor[j] = m;
 	}
-	for (int p = 2; smallprimes.size() < 100; p++) {
-		if (primefactor[p] == 0) {
-			smallprimes.push_back(p);
-			// see https://libdivide.com/documentation.html
-			libdivide::divider<uint64_t> fast_d((uint64_t)p);
-			smallprimedividers.push_back(fast_d);
+
+	int getprimefactor(int n) {
+		return primefactor[n];
+	}
+
+	 Sieve() {
+		setfactor(2);
+		setfactor(3);
+		for (int k = 5; k * k < PFSIZE; k += 6) {
+			setfactor(k); setfactor(k + 2);
 		}
+		for (int p = 2; smallprimes.size() < 100; p++) {
+			if (primefactor[p] == 0) {
+				smallprimes.push_back(p);
+				// see https://libdivide.com/documentation.html
+				libdivide::divider<uint64_t> fast_d((uint64_t)p);
+				smallprimedividers.push_back(fast_d);
+			}
+		}
+		NUMSMALLPRIMES = 60;  // from trials, this seems an optimal value
 	}
 
-	NUMSMALLPRIMES = 60;  // from trials, this seems an optimal value
-	srand(int(time(NULL)));
-	sieved = true;
-	printf("called sieve\n");
+	 void setNumSmallPrimes(int i) {
+		 if (i > smallprimes.size()) {
+			 printf("ERROR attempting to set NUMSMALLPRIMES=%d, larger than smallprimes size = %zd\n", i, smallprimes.size());
+			 exit(1);
+		 }
+		 NUMSMALLPRIMES = i;
+	 }
+};
+
+
+// single instance of sieve to be used by all functions
+Sieve sieve;
+
+// for testing purposes
+void setNumSmallPrimes(int i) {
+	sieve.setNumSmallPrimes(i);
 }
+
 
 //factorise using pre-calculated array primefactor[], where primefactor[x] is a prime factor of x
 void factorise_small(int n, uint64_t *primearray, int &pasize) {
-	int i = primefactor[n];
+	int i = sieve.primefactor[n];
 	while (i != 0){
 		primearray[pasize++]=(uint64_t)i;
 		n /= i;
-		i = primefactor[n];
+		i = sieve.primefactor[n];
 	}
 	primearray[pasize++] = (uint64_t)n;
 }
-
-
-uint64_t random_uint64_t(){
-	uint64_t out = 0ULL;
-	for (int i = 0; i < 8; i++)
-		out |= ((uint64_t)(rand() & 255)) << (i * 8);
-	return out;
-}
-
 
 uint64_t squareaddmodRE(uint64_t y, uint64_t  a, uint64_t n, RE &re) {
 	y = mulmodRE(y, y, re);
@@ -107,11 +123,11 @@ uint64_t pollard_rhoMU(uint64_t n) {
 		printf("\nCalling pollard_rhoMU for n=%llu", n);
 
 	do
-		a = random_uint64_t() % n;
+		a = mmix_rng() % n;
 	while (a == 0 || a == n - 2);
 
 	do
-		y = random_uint64_t() % n;
+		y = mmix_rng() % n;
 	while (y == 0 || y == n - 2);
 
 	while (g == 1LL) {
@@ -163,11 +179,11 @@ uint64_t pollard_rhoRE(uint64_t n) {
 		printf("\nCalling brent for n=%llu", n);
 
 	do
-		a = random_uint64_t() % n;
+		a = mmix_rng() % n;
 	while (a == 0 || a == n - 2);
 
 	do
-		y = random_uint64_t() % n;
+		y = mmix_rng() % n;
 	while (y == 0 || y == n - 2);
 
 	while (g == 1LL) {
@@ -254,7 +270,7 @@ char getmethod(){
 
 void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 
-	sieve();
+	//sieve();
 
 	pasize = 0;
 
@@ -263,7 +279,7 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 		return;
 	}
 	
-	if (n < PFSIZE){
+	if (n < sieve.PFSIZE){
 		method = 'S';
 		factorise_small(int(n), primearray, pasize);
 		return;
@@ -293,16 +309,16 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 		primearray[pasize++] = 2ull;
 		n >>= 1;
 	}
-	// trial division starting from 3
-	for (int i = 1; i < NUMSMALLPRIMES; ++i) {
-		uint64_t p = smallprimes[i];
-		if (n < PFSIZE)
+	// trial division starting from 3, as we have already found factors of 2 above
+	for (int i = 1; i < sieve.NUMSMALLPRIMES; ++i) {
+		uint64_t p = sieve.smallprimes[i];
+		if (n < sieve.PFSIZE)
 			break;
-		uint64_t q = n / smallprimedividers[i];
+		uint64_t q = n / sieve.smallprimedividers[i];
 		while (q * (uint64_t)p == n) {
 			primearray[pasize++] = (uint64_t)p;
 			n = q;
-			q = n / smallprimedividers[i];
+			q = n / sieve.smallprimedividers[i];
 		}
 	}
 	
@@ -310,7 +326,7 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 	if (n == 1)
 		return ;
 
-	if (n < PFSIZE){
+	if (n < sieve.PFSIZE){
 		factorise_small(int(n), primearray, pasize);
 		method = 'P';
 		return ;

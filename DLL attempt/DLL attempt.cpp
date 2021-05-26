@@ -8,7 +8,18 @@
 
 typedef unsigned long long u64;
 
+DLLEXPORT uint64_t addone() {
+	static uint64_t n = 0;
+	n++;
+	return n;
+}
 
+DLLEXPORT u64  knuthrand() {
+	// Random number Linear Congruential Generator MMIX from D.E. Knuth
+	static uint64_t r = 0xaccedeafacade;
+	r = r * 6364136223846793005ull + 1442695040888963407ull;
+	return r;
+}
 
 
 DLLEXPORT u64 ipow(u64 x, int p){

@@ -36,9 +36,9 @@ void performfactorisation(uint64_t n){
 
 uint64_t knuthrand() {
 	// Random number Linear Congruential Generator MMIX from D.E. Knuth
-	static uint64_t rng = 0xabbababe;
-	rng = rng * 6364136223846793005ull + 1442695040888963407ull;
-	return rng;
+	static uint64_t r = 0xaccedeafacade;
+	r = r * 6364136223846793005ull + 1442695040888963407ull;
+	return r;
 }
 
 
