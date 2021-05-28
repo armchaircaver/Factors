@@ -11,19 +11,11 @@
 #include "libdivide.h"
 #include <random>
 
-typedef std::linear_congruential_engine<
-	uint64_t, 6364136223846793005U, 1442695040888963407U, 0U>
-	knuth_mmix_t;  /* Knuth's preferred 64-bit LCG */
-
-/*
-const uint64_t PFSIZE = 1000L * 1000L;
-int primefactor[PFSIZE] = { 0 };
-int NUMSMALLPRIMES;
-std::vector<int> smallprimes;
-std::vector< libdivide::divider<uint64_t> > smallprimedividers;
-*/
 bool verbose = false;
-knuth_mmix_t mmix_rng(1234567ull);
+
+// random number generator used in pollard rho initial values
+std::linear_congruential_engine<
+	uint64_t, 6364136223846793005U, 1442695040888963407U, 0U> mmix_rng(1234567ull);
 
 void setVerbose(bool v) {
 	verbose = v;

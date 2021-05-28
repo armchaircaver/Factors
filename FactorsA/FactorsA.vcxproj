@@ -36,15 +36,6 @@
     <ClInclude Include="FactorsA.h" />
     <ClInclude Include="libdivide.h" />
   </ItemGroup>
-  <ItemGroup>
-    <YASM Include="..\Project1\mod64.asm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </YASM>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFF33D5F-57AA-4AD4-B9AC-6831E3F5C7D3}</ProjectGuid>
     <RootNamespace>FactorsA</RootNamespace>
@@ -138,7 +129,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Arthur\source\repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerOutput>All</AssemblerOutput>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

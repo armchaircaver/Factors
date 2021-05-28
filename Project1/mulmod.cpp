@@ -59,12 +59,20 @@ uint64_t mulmodSA(uint64_t a, uint64_t b, uint64_t m) {
 }
 
 // assembler version
-extern "C" uint64_t  _mulmod_64(uint64_t a, uint64_t b, uint64_t m);
+//extern "C" uint64_t  _mulmod_64(uint64_t a, uint64_t b, uint64_t m);
 
 uint64_t mulmodAS(uint64_t a, uint64_t b, uint64_t m){
 	//a = a >= m ? a %= m : a;
 	//b = b >= m ? b %= m : b;
-	return _mulmod_64(a, b, m);
+	//return _mulmod_64(a, b, m);
+	//replace assembler version with  version using intrinsics, now that _udiv128 is available in VS19
+	uint64_t high;
+	uint64_t low = _umul128(a, b, &high);
+	uint64_t rem;
+	uint64_t quotient = _udiv128(high, low, m, &rem);
+	return rem;
+
+
 }
 // repeated reduction of most significant 64 bits
 

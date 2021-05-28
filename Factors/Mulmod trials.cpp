@@ -448,9 +448,9 @@ int main(int argc, char **argv){
 	}
 
 
-	for (int i = 20; i < 64; i+=2){
-		uint64_t mbase = ipow(2, i) + 1;
-		//printf("\n numbers starting at mbase=2^%d+1 = %llu \n",i, mbase);
+	for (int i = 7; i < 20; i += 4) {
+		uint64_t mbase = ipow(10, i) + 1;
+		printf("\n\n numbers starting at mbase=10^%d+1 = %llu \n",i, mbase);
 		  
 		//testfunc(mbase, mulmod,         "mulmod       ");
 		//testfunc(mbase, mulmodSA, "mulmodSA     ");
