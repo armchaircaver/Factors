@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
-    <ClCompile Include="..\Factors\ipow.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
@@ -40,6 +39,7 @@
     <ProjectGuid>{EFF33D5F-57AA-4AD4-B9AC-6831E3F5C7D3}</ProjectGuid>
     <RootNamespace>FactorsA</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Factors tests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

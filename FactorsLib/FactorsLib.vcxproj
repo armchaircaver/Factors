@@ -146,15 +146,6 @@
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <YASM Include="..\Project1\mod64.asm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </YASM>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\Division by multiplication 64\Magic64.h" />
     <ClInclude Include="..\Project1\mulmod.h" />
   </ItemGroup>

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "FactorsA.h"
-#include "ipow.h"
 #include <ctime>	
 #include <windows.h>
 #include <algorithm>  // sort

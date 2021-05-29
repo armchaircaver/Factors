@@ -104,6 +104,14 @@ bool is_prime_ref(uint64_t n, uint64_t &factor){
 }
 
 
+inline int hashh(uint64_t x) {
+	x = ((x >> 32) ^ x) * 0x45d9f3b3335b369;  // 0x3335b369
+	x = ((x >> 32) ^ x) * 0x3335b36945d9f3b;
+	x = ((x >> 32) ^ x);
+	return x & 262143;
+}
+
+
 bool is_primeFJ(uint64_t n, uint64_t& factor) {
 	factor = 1uLL;
 

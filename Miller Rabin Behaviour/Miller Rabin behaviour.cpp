@@ -197,7 +197,8 @@ void simple_sprp_compare() {
 
 void simple_is_prime_compare() {
 	clock_t startTime = clock();
-	for (int i = 40; i < 64; i += 2) {
+	printf("\ncompare performance of is_SPRP (using Montgomery multiplication) and  is_primeFJ (using Rutten-Eekelen)");;
+	for (int i = 39; i < 64; i += 4) {
 		int primes = 0;
 		printf("numbers starting 2**%d\n", i);
 		uint64_t start = (1ull << i) + 1;
