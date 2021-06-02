@@ -19,7 +19,7 @@ void construct_primes(int power, int numprimes=100) {
 }
 
 
-void test_pollard_rhoRE() {
+void test_pollard_rhoRE(std::vector<uint64_t>primes) {
 	clock_t startTime = clock();
 
 	uint64_t fac;
@@ -37,7 +37,7 @@ void test_pollard_rhoRE() {
 		}
 	}
 	clock_t endTime = clock();
-	printf("pollard_rhoRE tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
+	printf("pollard_rhoRE      %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
 
 void test_pollard_rhoMU() {
@@ -62,7 +62,7 @@ void test_pollard_rhoMU() {
 }
 
 
-void test_pollard_brent_mont() {
+void test_pollard_brent_mont(std::vector<uint64_t> primes) {
 	clock_t startTime = clock();
 	uint64_t fac;
 	for (int i = 0; i < primes.size(); i++) {
@@ -84,7 +84,7 @@ void test_pollard_brent_mont() {
 		}
 	}
 	clock_t endTime = clock();
-	printf("Pollard Brent Montgomery tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
+	printf("Pollard_brent_mont %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
 
 
@@ -183,14 +183,14 @@ void test_powers2() {
 
 int main() {
 	//test_powers2();
-	for (int i = 10; i < 32; i++) {
-		printf("Numbers starting at 2**%d\n", i);
+	for (int i = 11; i < 32; i+=4) {
+		printf("\nNumbers starting at 2**%d\n", i);
 		primes.clear();
 		construct_primes(i);
-		test_pollard_rhoRE();
+		test_pollard_rhoRE(primes);
 		// pollard_rhoMU is much slower, so eliminate from trials
 		//test_pollard_rhoMU();
-		test_pollard_brent_mont();
+		test_pollard_brent_mont(primes);
 	}
-	lengthy_test_pollard_brent();
+	//lengthy_test_pollard_brent();
 }

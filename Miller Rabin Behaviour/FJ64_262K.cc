@@ -115,10 +115,15 @@ uint64 mulmodMont(uint64 baseM, uint64 e, uint64 modul, uint64 pv, uint64 oneM) 
 }
 
 
-bool is_SPRP(uint64 base, uint64 modul) {
+bool is_SPRP(uint64 base, uint64 modul, uint64_t pv /* =0ull */) {
     if (base >= modul) base = base % modul;
-    uint64 pu, pv;
-    xbinGCD(1ull << 63, modul, &pu, &pv);
+
+    // cater for pv to be pre-calculated 
+    if (pv == 0ull) {
+        uint64 pu;
+        xbinGCD(1ull << 63, modul, &pu, &pv);
+    }
+
     uint64 baseM = modul64(base, 0, modul);
     uint64 oneM = modul64(1, 0, modul);
 
@@ -152,5 +157,9 @@ bool is_prime_2_64(uint64 a) {
     if (a==2 || a==3 || a==5 || a==7) return true;
     if (a%2==0 || a%3==0 || a%5==0 || a%7==0) return false;
     if (a<121) return (a>1);
-     return is_SPRP(2ull,a) && is_SPRP(bases[hashh(a)],a);
+
+    // pre-calculate pu, pv as this is an expensive operation. Result can be used in both is_SPRP calls.
+    uint64 pu, pv;
+    xbinGCD(1ull << 63, a, &pu, &pv);
+    return is_SPRP(2ull,a, pv) && is_SPRP(bases[hashh(a)],a, pv);
 }

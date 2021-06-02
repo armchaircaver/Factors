@@ -141,5 +141,11 @@ bool is_primeFJ(uint64_t n, uint64_t& factor) {
 }
 
 bool is_prime(uint64_t n, uint64_t& factor) {
-	return is_primeFJ(n, factor);
+	if (n < (1ull<<43) )
+		return is_primeFJ(n, factor);
+
+	// for larger numbers, use the montgomery mutiplication technique
+	// we don't find a potential factor using this technique
+	factor = 1ull;
+	return is_prime_2_64(n);
 }

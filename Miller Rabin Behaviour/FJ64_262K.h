@@ -1,7 +1,8 @@
 #pragma once
 
+void xbinGCD(uint64_t a, uint64_t b, uint64_t* pu, uint64_t* pv);
 bool is_prime_2_64(uint64_t a);
-bool is_SPRP(uint64_t base, uint64_t modul);
+bool is_SPRP(uint64_t base, uint64_t modul, uint64_t pv = 0ull);
 int hashh(uint64_t x);
 
 uint64_t const bases[] = {

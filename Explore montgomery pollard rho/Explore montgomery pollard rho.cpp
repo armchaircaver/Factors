@@ -64,7 +64,7 @@ _declspec(noinline) uint64_t montmul64(uint64_t a, uint64_t b, uint64_t N, uint6
     if (hc || (th >= N)) th = th - N;
     */
 
-    // my attempt at speeding up- can't get intrinsics to work if adding 0+0, carryL is set to 2.
+    // my attempt at speeding up- need to define carry flags as uint32_t to get intrinsics to work. If defined as uint8_t, can get overwritten.
     
     uint64_t tl2, th2;
     uint32_t low_carry_in = 0;

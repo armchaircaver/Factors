@@ -14,4 +14,7 @@ public:
 	int64_t ms() {
 		return std::chrono::duration_cast<std::chrono::milliseconds>(endtime - begintime).count();
 	}
+	int64_t microsec() {
+		return std::chrono::duration_cast<std::chrono::microseconds>(endtime - begintime).count();
+	}
 };

@@ -1,5 +1,4 @@
 #include "miller rabin.h"
-#include "mt64.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
@@ -8,6 +7,8 @@
 #include "FJ64_262K.h"
 #include <RuttenEekelen.h>
 #include <mulmod.h>
+#include "../mpzPollard/Timer.h"
+#include <random>
 
 int countcomposites;
 int factorcount;
@@ -39,60 +40,102 @@ void examine(uint64_t p, uint64_t mod) {
 	}
 }
 
+
+uint64_t nextcoprime(uint64_t n) {
+	static bool residues[210] = { false };
+	static bool initialised = false;
+	if (!initialised) {
+		residues[0] = true;
+		for (int p : {2, 3, 5, 7}) {
+			for (int i = p; i < 210; i += p)
+				residues[i] = true;
+		}
+		initialised = true;
+	}
+	int r = n % 210;
+	while (residues[r])
+		r++;
+	return (n / 210) * 210 + r;
+}
 // performance comparison of is_prime and   FJ64_262K is_prime_2_64
 void performance_trial() {
-	init_genrand64((uint64_t)time(NULL));
+
 	uint64_t f;
 
-	for (int index = 10; index < 64; index++) {
+	printf("\t\t\t\tis_prime  \t is_prime_2_64 \t is_primeFJ \t  is_prime_ref \n");
+	for (int index = 11; index < 64; index+=4) {
 		uint64_t interval = (1ULL << (index + 1)) - (1ULL << index);
+
+		// create a random set of numbers, adjusting to make them all coprime to 2.3.5.7=210
+		std::mt19937_64 mt;
+		mt.seed(std::random_device{}());
+		mt.discard(700000);  // http://www.iro.umontreal.ca/~lecuyer/myftp/papers/lfsr04.pdf
+		std::vector<uint64_t> samples;
+		int trials = 3000000;
+		for (int i = 0; i < trials; i++) {
+			samples.push_back( nextcoprime ( (1ull << index) + mt() % interval) );
+		}
+
+
 		clock_t startTime = clock();
-		int primecount = 0;
-		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + count;
+		int primecount1 = 0;
+		for (auto n : samples) {
 			if (is_prime(n, f))
-				primecount++;
+				primecount1++;
 		}
 		clock_t endTime = clock();
-		printf("is_prime     : 2^%d\t %llu \t %8.2f\t", index, 1ull<<index,
+		printf("is_prime     : 2^%d ... 2^%d\t %8.2f\t", index, index+1,
 			double(endTime - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
 
 		startTime = clock();
-		primecount = 0;
-		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + count;
+		int primecount2 = 0;
+		for(auto n : samples) {
 			if (is_prime_2_64(n))
-				primecount++;
+				primecount2++;
 		}
-		printf("%8.2f\t", double(clock() - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
+		endTime = clock();
+		printf("%8.2f\t", double(endTime - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
 
 
 
 		startTime = clock();
-		primecount = 0;
-		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + count;
-			if (is_primeFJ(n,f))
-				primecount++;
+		int primecount3 = 0;
+		for (auto n : samples) {
+			if (is_primeFJ(n, f))
+				primecount3++;
 		}
 		endTime = clock();
-		printf("%8.2f\n", double(clock() - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
+		printf("%8.2f\t", double(endTime - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
 
+		startTime = clock();
+		int primecount4 = 0;
+		for (auto n : samples) {
+			if (is_prime_ref(n, f))
+				primecount4++;
+		}
+		endTime = clock();
+		printf("%8.2f\t%d\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC, primecount1); fflush(stdout);
+
+
+		if (primecount1 != primecount2 || primecount2 != primecount3 || primecount2 != primecount4)
+		{
+			printf("mismatch in number of primes found\n"); exit(1);
+		}
 	
 
 	}
 }
 
 void verify() {
-	init_genrand64((uint64_t)time(NULL));
+	std::mt19937_64 mt;
+	mt.seed(std::random_device{}());
 	uint64_t f;
 
-	int index = 5;
-	for (;;) {
+	for (int index = 7; index < 64; index+=4) {
 		uint64_t interval = (1ULL << (index + 1)) - (1ULL << index);
 		int primecount = 0;
 		for (int count = 0; count < 1000000; count++) {
-			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
+			uint64_t n = (1ULL << index) + mt() % interval;
 			bool n_is_prime = is_prime_ref(n, f);
 			if (n_is_prime != is_prime_2_64(n))
 			{
@@ -104,19 +147,18 @@ void verify() {
 			}
 		}
 		printf("2^%d verified\n", index);
-		index++;
-		if (index == 64)index = 5;
 	}
 }
 
 void longrun() {
-	init_genrand64((uint64_t)time(NULL));
+	std::mt19937_64 mt;
+	mt.seed(std::random_device{}());
 	uint64_t primecount = 0;
 	for (int index = 63; index < 64; index++) {
 		uint64_t interval = (1ULL << (index + 1)) - (1ULL << index);
 		uint64_t primecount = 0;
 		for (int count = 0; count < 10000000000; count++) {
-			uint64_t n = (1ULL << index) + genrand64_int64() % interval;
+			uint64_t n = (1ULL << index) + mt() % interval;
 			if (is_prime_2_64(n)) {
 				primecount++;
 				if (primecount%10000==0)
@@ -213,8 +255,10 @@ void simple_is_prime_compare() {
 				continue;
 			}
 
+			uint64_t pu,pv;
+			xbinGCD(1ull << 63, n, &pu, &pv);
 
-			if (is_SPRP(2ull, n) && is_SPRP(bases[hashh(n)], n))
+			if (is_SPRP(2ull, n,pv) && is_SPRP(bases[hashh(n)], n,pv))
 				primes++;
 		}
 		clock_t endTime = clock();
@@ -236,31 +280,71 @@ void simple_is_prime_compare() {
 
 }
 
+void identify_RE_gt_MG() {
+	Timer tim;
+	//find numbers where Rutten Eekelen takes longer than Montgomery
+	printf("\ncompare performance of is_SPRP (using Montgomery multiplication) and  is_primeFJ (using Rutten-Eekelen)");;
+	for (int i = 39; i < 64; i += 4) {
+		int primes = 0;
+		printf("numbers starting 2**%d\n", i);
+		uint64_t start = (1ull << i) + 1;
+		for (uint64_t n = start; n < start + 10000000; n += 2) {
+
+			if (n == 2 || n == 3 || n == 5 || n == 7) {
+				primes++; continue;
+			}
+			if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0 || n % 7 == 0) continue;
+			if (n < 121) {
+				if (n > 1) primes++;
+				continue;
+			}
+
+
+			tim.start();
+			if (is_SPRP(2ull, n) && is_SPRP(bases[hashh(n)], n))
+				primes++;
+			tim.end();
+			int64_t SPRP_time = tim.microsec();
+
+			uint64_t factor = 0;
+			tim.start();
+			if (is_primeFJ(n, factor))
+				primes++;
+			tim.end();
+			int64_t is_primeFJ_time = tim.microsec();
+
+			if (is_primeFJ_time - SPRP_time > 100  || SPRP_time - is_primeFJ_time > 100)
+				printf("%llu %lld %lld \n", n, SPRP_time, is_primeFJ_time);
+		}
+	}
+}
 
 int main(){
 
 	//verify();
-	simple_is_prime_compare();
-	simple_sprp_compare();
+	//simple_is_prime_compare();
+	//simple_sprp_compare();
 	performance_trial();
 	//longrun();
+	//identify_RE_gt_MG();
 
-	uint64_t seed = (uint64_t)time(NULL);
-
+	/*
 	uint64_t mod = 1000000LL;
-	init_genrand64(seed);
+	std::mt19937_64 mt;
+	mt.seed(std::random_device{}());
 	for (int index = 7; index<20; index++){
 		countcomposites = 0;
 		factorcount = 0;
 		mod *= 10LL;
 		clock_t startTime = clock();
 		for (int i = 0; (i<100000) || (factorcount == 0); i++){
-			uint64_t p = genrand64_int64() % mod;
+			uint64_t p = mt() % mod;
 			if (p >= mod / 10)
 				examine(p,mod);
 			}
 		printf("10^%d: %d composites, %d factors, %8.2f sec\n", index, countcomposites, factorcount,
 			   double(clock() - startTime) / (double)CLOCKS_PER_SEC); fflush(stdout);
 	}
+	*/
 	return 0;
 }

@@ -18,15 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <YASM Include="..\Project1\mod64.asm">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </YASM>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E5121DB1-6774-45A5-9795-71E5313E6C85}</ProjectGuid>
     <RootNamespace>MillerRabinBehaviour</RootNamespace>
@@ -143,13 +134,12 @@
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
     <ClCompile Include="FJ64_262K.cc" />
     <ClCompile Include="Miller Rabin behaviour.cpp" />
-    <ClCompile Include="mt64.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\FactorsA\FactorsA.h" />
     <ClInclude Include="..\Factors\miller rabin.h" />
+    <ClInclude Include="..\mpzPollard\Timer.h" />
     <ClInclude Include="FJ64_262K.h" />
-    <ClInclude Include="mt64.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

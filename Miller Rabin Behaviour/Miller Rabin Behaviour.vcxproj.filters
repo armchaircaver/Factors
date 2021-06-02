@@ -30,9 +30,6 @@
     <ClCompile Include="..\Project1\mulmod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mt64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,16 +47,11 @@
     <ClInclude Include="..\Factors\miller rabin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mt64.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FJ64_262K.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <YASM Include="..\Project1\mod64.asm">
-      <Filter>Source Files</Filter>
-    </YASM>
+    <ClInclude Include="..\mpzPollard\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

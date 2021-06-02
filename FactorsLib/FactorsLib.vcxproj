@@ -142,6 +142,7 @@
     <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
     <ClCompile Include="..\FactorsA\FactorsA.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
+    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Project1\mulmod.cpp" />
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
   </ItemGroup>
