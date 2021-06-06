@@ -3,7 +3,10 @@
 
 #include "stdafx.h"
 #include <stdint.h>
-#include <FactorsA.h>
+#include <vector>
+#include "../FactorsA/FactorsA.h"
+#include "../Factors/miller rabin.h"
+
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
 

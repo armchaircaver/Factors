@@ -1,12 +1,12 @@
 #include <ctime>
 #include <vector>
-#include "miller rabin.h"
-#include "mulmod.h"
+#include "../Factors/miller rabin.h"
+#include "../Project1/mulmod.h"
 #include <stdint.h>
-#include "Magic64.h"
+#include "../Division by multiplication 64/Magic64.h"
 #include <algorithm>  // sort, count
 #include <unordered_set>
-#include "RuttenEekelen.h"
+#include "../RuttenEekelen/RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 #include "libdivide.h"
 #include <random>

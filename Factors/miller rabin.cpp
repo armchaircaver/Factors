@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "mulmod.h"
+#include "../Project1/mulmod.h"
 #include <vector>
-#include "Magic64.h"
-#include "RuttenEekelen.h"
+#include "../Division by multiplication 64/Magic64.h"
+#include "../RuttenEekelen/RuttenEekelen.h"
 #include "../miller rabin behaviour/FJ64_262K.h"
 
 

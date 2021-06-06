@@ -2,7 +2,7 @@
 #include <intrin.h>  // _umul128, _BitScanReverse64
 #include "RuttenEekelen.h"
 #include <algorithm> // std::swap
-#include "mulmod.h"
+#include "../Project1/mulmod.h"
 #include <cassert>
 
 

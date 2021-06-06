@@ -133,7 +133,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FACTORSDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\FactorsA;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;C:\Users\Arthur\Source\Repos\Factors\Division by multiplication 64;C:\Users\Arthur\Source\Repos\Factors\RuttenEekelen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
