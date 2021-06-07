@@ -18,36 +18,9 @@
     <ClCompile Include="FactorsA test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Project1\mulmod.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Factors\miller rabin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FactorsA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FactorsA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libdivide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

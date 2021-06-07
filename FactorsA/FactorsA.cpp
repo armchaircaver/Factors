@@ -1,15 +1,16 @@
 #include <ctime>
 #include <vector>
-#include "../Factors/miller rabin.h"
-#include "../Project1/mulmod.h"
 #include <stdint.h>
-#include "../Division by multiplication 64/Magic64.h"
 #include <algorithm>  // sort, count
 #include <unordered_set>
+#include <random>
+
+#include "../Factors/miller rabin.h"
+#include "../Project1/mulmod.h"
+#include "../Division by multiplication 64/Magic64.h"
 #include "../RuttenEekelen/RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 #include "libdivide.h"
-#include <random>
 
 bool verbose = false;
 

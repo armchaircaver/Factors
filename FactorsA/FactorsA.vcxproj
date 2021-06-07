@@ -19,21 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
-    <ClCompile Include="..\Factors\miller rabin.cpp" />
-    <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
-    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
-    <ClCompile Include="..\Project1\mulmod.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
     <ClCompile Include="FactorsA test.cpp" />
-    <ClCompile Include="FactorsA.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h" />
     <ClInclude Include="FactorsA.h" />
-    <ClInclude Include="libdivide.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FactorsLib\FactorsLib.vcxproj">
+      <Project>{2e118b1a-1f7f-49a3-a95c-6919c8517303}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFF33D5F-57AA-4AD4-B9AC-6831E3F5C7D3}</ProjectGuid>
@@ -113,7 +107,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Arthur\Source\Repos\Factors\Factors;C:\Users\Arthur\Source\Repos\Factors\Project1;C:\Users\Arthur\Source\Repos\Factors\divide long unsigned;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -130,11 +124,13 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(OutDir)FactorsDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
