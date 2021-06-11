@@ -330,6 +330,13 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 	return ;
 }
 
+std::vector<uint64_t> factorise(uint64_t n) {
+	uint64_t primearray[64];
+	int pasize = 0;
+	factorise(n, primearray, pasize);
+	return std::vector<uint64_t>(primearray, primearray + pasize);
+}
+
 void allfactors(uint64_t n, uint64_t *factorsarray, int &factorssize){
 	int pasize=0;
 	uint64_t primearray[64];
