@@ -6,8 +6,6 @@
 #include <random>
 
 #include "../Factors/miller rabin.h"
-#include "../Project1/mulmod.h"
-#include "../Division by multiplication 64/Magic64.h"
 #include "../RuttenEekelen/RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 #include "libdivide.h"
@@ -90,6 +88,7 @@ void factorise_small(int n, uint64_t *primearray, int &pasize) {
 	primearray[pasize++] = (uint64_t)n;
 }
 
+/*
 uint64_t squareaddmodRE(uint64_t y, uint64_t  a, uint64_t n, RE &re) {
 	y = mulmodRE(y, y, re);
 	return addMod(y, a, n);
@@ -211,7 +210,7 @@ uint64_t pollard_rhoRE(uint64_t n) {
 
 	return g;
 }
-
+*/
 
 void factorise_large(uint64_t n, uint64_t *primearray, int &pasize){
 	//printf("calling factorise_large for n=%llu\n", n);

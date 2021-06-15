@@ -41,13 +41,7 @@
     <ClCompile Include="..\Factors\miller rabin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Project1\mulmod.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp">

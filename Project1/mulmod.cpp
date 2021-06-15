@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>     /* exit, EXIT_FAILURE */
 #include <algorithm> // std::swap
-#include "../Division by multiplication 64/Magic64.h"
+//#include "../Division by multiplication 64/Magic64.h"
 #include "../RuttenEekelen/RuttenEekelen.h"
 #include "mulmod.h"
 

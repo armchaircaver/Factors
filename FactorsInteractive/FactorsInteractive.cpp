@@ -1,15 +1,17 @@
 ﻿#include <vector>
 #include <stdio.h>
 #include <stdint.h>
-#include "../FactorsA/FactorsA.h"
 #include <ctime>	
 #include <algorithm>  // sort
 #include <string>
 #include <iostream>
-#include "../mpzPollard/Timer.h"
 #include <corecrt_io.h>
 #include <io.h>
 #include <fcntl.h>
+
+#include "../FactorsA/FactorsA.h"
+#include "../mpzPollard/Timer.h"
+
 
 
 

@@ -156,12 +156,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
     <ClCompile Include="..\FactorsA\FactorsA.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
-    <ClCompile Include="..\Project1\mulmod.cpp" />
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -184,11 +182,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FactorsLib\FactorsLib.vcxproj">
-      <Project>{2e118b1a-1f7f-49a3-a95c-6919c8517303}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

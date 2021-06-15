@@ -139,17 +139,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp" />
     <ClCompile Include="..\FactorsA\FactorsA.cpp" />
     <ClCompile Include="..\Factors\miller rabin.cpp" />
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc" />
     <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp" />
-    <ClCompile Include="..\Project1\mulmod.cpp" />
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Division by multiplication 64\Magic64.h" />
-    <ClInclude Include="..\Project1\mulmod.h" />
+    <ClInclude Include="..\FactorsA\FactorsA.h" />
+    <ClInclude Include="..\Factors\miller rabin.h" />
+    <ClInclude Include="..\Miller Rabin Behaviour\FJ64_262K.h" />
+    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h" />
+    <ClInclude Include="..\RuttenEekelen\RuttenEekelen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
