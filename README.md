@@ -19,7 +19,15 @@ for smaller numbers, as this appears to be faster
 I have modified the code to make use of Visual Studio intrinsics for better performance.
 
 
+There are a number of experimental and performance testing projects in the solution that can be ignored. The main projects are:
 
+- FactorsDLL,  a dynamic link library that can be called from Python. Example Python 3 programs are provided to illustrate how the DLL is called from Python.
+
+- FactorsLib, a static library of the components used in factorisation
+
+- FactorsTest, a set of tests to check the correctness and performance of the factorisation algorithm
+
+- FactosInteractive, and interactive executable that factorises numbers entered by the user.
     
     
 
