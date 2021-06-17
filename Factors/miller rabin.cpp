@@ -5,8 +5,6 @@
 #include "../miller rabin behaviour/FJ64_262K.h"
 
 
-using namespace std;
-
 
 uint64_t gcd(uint64_t a, uint64_t b){
 	uint64_t c;
@@ -93,14 +91,6 @@ bool is_prime_ref(uint64_t n, uint64_t &factor){
 			return false;
 
 	return true; // passed tests for all witnesses
-}
-
-
-inline int hashh(uint64_t x) {
-	x = ((x >> 32) ^ x) * 0x45d9f3b3335b369;  // 0x3335b369
-	x = ((x >> 32) ^ x) * 0x3335b36945d9f3b;
-	x = ((x >> 32) ^ x);
-	return x & 262143;
 }
 
 

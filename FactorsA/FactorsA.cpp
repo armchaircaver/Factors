@@ -1,8 +1,6 @@
-#include <ctime>
 #include <vector>
 #include <stdint.h>
-#include <algorithm>  // sort, count
-#include <unordered_set>
+#include <unordered_set> // to create a set pf primes for totient
 #include <random>
 
 #include "../Factors/miller rabin.h"

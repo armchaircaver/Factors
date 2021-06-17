@@ -1,8 +1,8 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <intrin.h>  // _umul128, _BitScanReverse64
+#include <stdlib.h>
 #include "RuttenEekelen.h"
-#include <algorithm> // std::swap
-#include <cassert>
 
 
 int ceillog2(uint64_t n){ // ceiling of log base 2

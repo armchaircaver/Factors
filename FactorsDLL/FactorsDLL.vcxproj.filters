@@ -54,4 +54,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="factorsdll.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="factorsexample.py" />
+  </ItemGroup>
 </Project>

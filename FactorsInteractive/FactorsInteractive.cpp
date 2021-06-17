@@ -1,7 +1,6 @@
 ﻿#include <vector>
 #include <stdio.h>
 #include <stdint.h>
-#include <ctime>	
 #include <algorithm>  // sort
 #include <string>
 #include <iostream>
