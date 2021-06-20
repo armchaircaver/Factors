@@ -1,9 +1,8 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <intrin.h>  // _umul128, _BitScanReverse64
+#include <stdlib.h>
 #include "RuttenEekelen.h"
-#include <algorithm> // std::swap
-#include "mulmod.h"
-#include <cassert>
 
 
 int ceillog2(uint64_t n){ // ceiling of log base 2
@@ -94,6 +93,14 @@ again2:
 	return q1*b + q0;
 }
 
+uint64_t mulmod_intrinsic(uint64_t a, uint64_t b, uint64_t m) {
+	uint64_t high;
+	uint64_t low = _umul128(a, b, &high);
+	uint64_t rem;
+	uint64_t quotient = _udiv128(high, low, m, &rem);
+	return rem;
+}
+
 
 struct RE RE_gen(uint64_t d){
 
@@ -128,11 +135,10 @@ struct RE RE_gen(uint64_t d){
 	return re;
 }
 
-// noinline used for profiling
-/*__declspec(noinline) */ uint64_t mulmodRE(uint64_t a, uint64_t b, struct RE &re){
+uint64_t mulmodRE(uint64_t a, uint64_t b, struct RE &re){
 
 	if (re.M & 0x8000000000000000)
-		return mulmodAS(a, b, re.M); //RE cannot process numbers above 2^63
+		return mulmod_intrinsic(a, b, re.M); //RE cannot process numbers above 2^63
 
 	if (re.M == 0ull) {
 		printf("mulmodRE, uninitialised RE structure\n");
@@ -179,13 +185,6 @@ struct RE RE_gen(uint64_t d){
 	if (rdashdash >= M)
 	rdashdash -= M;
 
-	/*
-	if (rdashdash != mulmodSA(a, b, M)){
-		printf("MISMATCH for a=%llu,b=%llu,M=%llu\n", a, b, M);
-		printf("rdashdash=%llu, mulmodSA=%llu\n", rdashdash, mulmodSA(a, b, M));
-		exit(1);
-	}
-	*/
 	return rdashdash;
 }
 

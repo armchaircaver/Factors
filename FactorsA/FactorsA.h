@@ -1,6 +1,8 @@
 #include <stdint.h>
 
-void factorise(uint64_t n, uint64_t *primearray, int &pasize);
+void factorise(uint64_t n, uint64_t* primearray, int& pasize);
+
+std::vector<uint64_t> factorise(uint64_t n);
 
 void allfactors(uint64_t n, uint64_t *factorsarray, int &factorssize);
 

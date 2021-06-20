@@ -1,14 +1,18 @@
-#include "miller rabin.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
 #include <stdint.h>
-#include "FactorsA.h"
-#include "FJ64_262K.h"
-#include <RuttenEekelen.h>
-#include <mulmod.h>
-#include "../mpzPollard/Timer.h"
 #include <random>
+
+#include "../FactorsA/FactorsA.h"
+#include "../mpzPollard/Timer.h"
+#include "../Factors/miller rabin.h"
+#include "../Project1/mulmod.h"
+#include "../Division by multiplication 64/Magic64.h"
+#include "../RuttenEekelen/RuttenEekelen.h"
+#include "../Pollard Rho trials/Pollard Rho Montgomery.h"
+#include "FJ64_262K.h"
+
 
 int countcomposites;
 int factorcount;

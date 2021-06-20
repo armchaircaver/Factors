@@ -43,6 +43,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Test DLL attempt", "Test DL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{227F6B70-D069-4D48-9F97-71E4745605D6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FactorsInteractive", "FactorsInteractive\FactorsInteractive.vcxproj", "{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -295,6 +297,20 @@ Global
 		{44765960-EED2-4327-A713-89FF71FABA13}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{44765960-EED2-4327-A713-89FF71FABA13}.Release|Win32.ActiveCfg = Release|Any CPU
 		{44765960-EED2-4327-A713-89FF71FABA13}.Release|x64.ActiveCfg = Release|Any CPU
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|Win32.Build.0 = Debug|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|x64.ActiveCfg = Debug|x64
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Debug|x64.Build.0 = Debug|x64
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|Any CPU.ActiveCfg = Release|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|Win32.ActiveCfg = Release|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|Win32.Build.0 = Release|Win32
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|x64.ActiveCfg = Release|x64
+		{DA3383D2-BD32-4530-B6D4-B0CD70B2D1C2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

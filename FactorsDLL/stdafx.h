@@ -14,8 +14,10 @@
 
 
 // TODO: reference additional headers your program requires here
+/*
 #include <ctime>
 #include <vector>
 #include <stdint.h>
 #include "miller rabin.h"
 #include "mulmod.h"
+*/

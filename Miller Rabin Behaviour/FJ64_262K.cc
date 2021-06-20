@@ -144,12 +144,11 @@ bool is_SPRP(uint64 base, uint64 modul, uint64_t pv /* =0ull */) {
     return 0;
 }
 
-// inline as the same function is defined in mill rabin.cpp
-inline int hashh(uint64 x) {
+int hashh(uint64_t x) {
     x = ((x >> 32) ^ x) * 0x45d9f3b3335b369;  // 0x3335b369
     x = ((x >> 32) ^ x) * 0x3335b36945d9f3b;
     x = ((x >> 32) ^ x);
-    return x&262143;
+    return x & 262143;
 }
 
 

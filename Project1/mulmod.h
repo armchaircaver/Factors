@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "Magic64.h"
+#include "../Division by multiplication 64/Magic64.h"
 
 uint64_t mulmodSA(uint64_t a, uint64_t b, uint64_t m);
 

@@ -2,7 +2,7 @@
 // adapted for 64 bit from Hackers Delight 
 #include <stdint.h>
 #include <intrin.h>  // _umul128
-#include "Magic64.h"
+#include "../Division by multiplication 64/Magic64.h"
 
 
 struct mu magicu(uint64_t d) {

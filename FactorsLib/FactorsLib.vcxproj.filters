@@ -21,13 +21,7 @@
     <ClCompile Include="..\FactorsA\FactorsA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Division by Multiplication\Magic64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Factors\miller rabin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Project1\mulmod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\RuttenEekelen\RuttenEekelen.cpp">
@@ -36,12 +30,24 @@
     <ClCompile Include="..\Miller Rabin Behaviour\FJ64_262K.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Pollard Rho trials\Pollard Rho Montgomery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Project1\mulmod.h">
+    <ClInclude Include="..\FactorsA\FactorsA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Division by multiplication 64\Magic64.h">
+    <ClInclude Include="..\Miller Rabin Behaviour\FJ64_262K.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Factors\miller rabin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RuttenEekelen\RuttenEekelen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Pollard Rho trials\Pollard Rho Montgomery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

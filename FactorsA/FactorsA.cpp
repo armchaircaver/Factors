@@ -1,15 +1,12 @@
-#include <ctime>
 #include <vector>
-#include "miller rabin.h"
-#include "mulmod.h"
 #include <stdint.h>
-#include "Magic64.h"
-#include <algorithm>  // sort, count
-#include <unordered_set>
-#include "RuttenEekelen.h"
+#include <unordered_set> // to create a set pf primes for totient
+#include <random>
+
+#include "../Factors/miller rabin.h"
+#include "../RuttenEekelen/RuttenEekelen.h"
 #include "../Pollard Rho trials/Pollard Rho Montgomery.h"
 #include "libdivide.h"
-#include <random>
 
 bool verbose = false;
 
@@ -89,6 +86,7 @@ void factorise_small(int n, uint64_t *primearray, int &pasize) {
 	primearray[pasize++] = (uint64_t)n;
 }
 
+/*
 uint64_t squareaddmodRE(uint64_t y, uint64_t  a, uint64_t n, RE &re) {
 	y = mulmodRE(y, y, re);
 	return addMod(y, a, n);
@@ -210,7 +208,7 @@ uint64_t pollard_rhoRE(uint64_t n) {
 
 	return g;
 }
-
+*/
 
 void factorise_large(uint64_t n, uint64_t *primearray, int &pasize){
 	//printf("calling factorise_large for n=%llu\n", n);
@@ -327,6 +325,13 @@ void factorise(uint64_t n, uint64_t *primearray, int &pasize){
 	factorise_large(n, primearray, pasize);
 	method = 'Q';
 	return ;
+}
+
+std::vector<uint64_t> factorise(uint64_t n) {
+	uint64_t primearray[64];
+	int pasize = 0;
+	factorise(n, primearray, pasize);
+	return std::vector<uint64_t>(primearray, primearray + pasize);
 }
 
 void allfactors(uint64_t n, uint64_t *factorsarray, int &factorssize){
