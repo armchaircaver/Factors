@@ -27,7 +27,7 @@ There are a number of experimental and performance testing projects in the solut
 
 - FactorsTest, a set of tests to check the correctness and performance of the factorisation algorithm
 
-- FactosInteractive, and interactive executable that factorises numbers entered by the user.
+- FactorsInteractive, and interactive executable that factorises numbers entered by the user.
     
     
 
