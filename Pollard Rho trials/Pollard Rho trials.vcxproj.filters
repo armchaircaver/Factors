@@ -63,9 +63,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <YASM Include="..\Project1\mod64.asm">
-      <Filter>Source Files</Filter>
-    </YASM>
-  </ItemGroup>
 </Project>

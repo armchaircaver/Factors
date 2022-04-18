@@ -18,7 +18,7 @@ void construct_primes(int power, int numprimes=100) {
 	} while (primes.size() < numprimes);
 }
 
-
+/*
 void test_pollard_rhoRE(std::vector<uint64_t>primes) {
 	clock_t startTime = clock();
 
@@ -40,6 +40,7 @@ void test_pollard_rhoRE(std::vector<uint64_t>primes) {
 	printf("pollard_rhoRE      %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
 
+
 void test_pollard_rhoMU() {
 	clock_t startTime = clock();
 
@@ -60,7 +61,7 @@ void test_pollard_rhoMU() {
 	clock_t endTime = clock();
 	printf("pollard_rhoMU tests completed  %8.2f sec\n", double(endTime - startTime) / (double)CLOCKS_PER_SEC);
 }
-
+*/
 
 void test_pollard_brent_mont(std::vector<uint64_t> primes) {
 	clock_t startTime = clock();
@@ -187,7 +188,7 @@ int main() {
 		printf("\nNumbers starting at 2**%d\n", i);
 		primes.clear();
 		construct_primes(i);
-		test_pollard_rhoRE(primes);
+		//test_pollard_rhoRE(primes);
 		// pollard_rhoMU is much slower, so eliminate from trials
 		//test_pollard_rhoMU();
 		test_pollard_brent_mont(primes);
