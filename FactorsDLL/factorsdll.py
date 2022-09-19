@@ -1,6 +1,9 @@
 import ctypes
+from os import getcwd
 
-Factorsdll = ctypes.cdll.LoadLibrary ("FactorsDLL.dll")
+
+cwd = getcwd()
+Factorsdll = ctypes.cdll.LoadLibrary (cwd+"\FactorsDLL.dll")
 
 # array to receive prime factors, large enough for factors of any 64 bit number
 resArray = (ctypes.c_ulonglong * 64)() 
